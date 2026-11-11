@@ -1274,6 +1274,62 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
 .ps-table th:first-child, .ps-table td:first-child { width: 18%; }
 .ps-maker-line { font-weight: 400; color: #7a746b; font-size: 7.5pt; margin-top: 1px; line-height: 1.3; }
 
+  
+/* ——— Industry uses ——— */
+.industry-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.industry-pitch {
+  background: var(--brand-soft);
+  border: 1px solid #cfe0e0;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 14.5px;
+  color: var(--brand-ink);
+  line-height: 1.7;
+  margin: 0 0 16px;
+}
+.industry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.industry-comp {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+.why-item { margin: 0 0 12px; }
+.why-item:last-child { margin-bottom: 0; }
+.why-item .wb { font-weight: 650; font-size: 13.5px; color: var(--ink); }
+.why-item p { margin: 4px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.65; }
+.industry-note {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.65;
+}
+.industry-export {
+  margin: 0 0 14px;
+}
+.industry-export.is-off { opacity: 0.45; pointer-events: none; }
+.industry-export label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+@media (max-width: 980px) {
+  .industry-grid { grid-template-columns: 1fr; }
+}
+.ps-pitch {
+  margin: 0 0 8px;
+  font-size: 10pt;
+  line-height: 1.55;
+}
+.ps-why { margin: 0 0 6px; font-size: 9pt; color: #1c1916; line-height: 1.5; break-inside: avoid; page-break-inside: avoid; }
+.ps-why strong { font-weight: 650; }
+.ps-caveat { margin: 6px 0 0; font-size: 8pt; color: #7a746b; line-height: 1.45; }
+
   </style>
 </head>
 <body>
@@ -1334,7 +1390,7 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
       makerShort: "普瑞曼 · Evolue",
       headlines: ["mfr", "density", "vicat"],
       chartKeys: ["mfr", "density", "vicat"],
-      aliases: ["evolue", "吹膜", "sp2320", "普瑞曼", "三井", "prime polymer", "自立袋", "冷冻"]
+      aliases: ["evolue", "吹膜", "sp2320", "普瑞曼", "三井", "prime polymer", "自立袋", "冷冻", "化妆品软管", "软管", "光泽", "抗开裂"]
     },
     SP0540: {
       category: "mpe",
@@ -1373,6 +1429,38 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
       chartKeys: ["mfr", "density", "gma_content"],
       aliases: ["igetabond", "住友", "bfe", "bf-e", "相容剂", "二元", "egma"]
     }
+  };
+
+
+  const INDUSTRIES = {
+    SP2320: [
+      {
+        id: "cosmetic-tube",
+        name: "化妆品软管",
+        applications: [
+          "软管管身层：常与 LDPE 共混后挤出或吹膜制管（共混比例需按设备与配方打样，此处不给定配比）",
+          "多层或铝塑/塑料层合软管中的聚乙烯层（外层更侧重外观，内层更侧重耐内容物，均需打样确认）"
+        ],
+        keyBenefits: ["提高光泽度", "提高透明度", "提高抗开裂性能"],
+        whyItWorks: [
+          {
+            benefit: "提高光泽度",
+            detail: "厂家将 SP2320 的吹膜级特点写为「高透明与光泽」。单页物性表未给出光泽（如 ASTM D2457）数值，故不以数字承诺，需用管身样件实测。"
+          },
+          {
+            benefit: "提高透明度",
+            detail: "同上，系列定位强调高透明；密度 0.920 g/cm³（ISO 1183）。Evolue 公开说明茂金属 C6-LLDPE 的光学性能优于常规催化剂 LLDPE，但不等于本品已测定雾度。"
+          },
+          {
+            benefit: "提高抗开裂性能",
+            detail: "耐环境应力开裂 ESCR >1000 h（ASTM D1693）；摆锤冲击未破（ISO 179-1）；断裂伸长率 350%（ISO 527-1/-2）。膏霜、乳液中的表面活性剂和油脂会对聚乙烯造成环境应力开裂，高 ESCR 有助于管身抗开裂。上述为实验室典型值，不能代替灌装后的实管考核。"
+          }
+        ],
+        competitorsNote: "本行业更看重外观（光泽、透明）和抗开裂。竞品里 Exceed m 2018.MA（熔指 2.0 g/10 min、密度 0.918 g/cm³）与 SP2320（2.0 / 0.920）最接近，可作为同类吹膜茂金属对照；Anteo FK1820 密度接近但熔指偏低（1.5），加工窗口可能不同；KERNEL KF283 密度接近，弯曲模量更高（300 vs 240 MPa）、熔点更低，手感会偏刚；SUPEER 7318BE 熔指更高（3.0）且厂家定位偏流延，不宜直接当作管身用料对照。上述竞品在已整理的公开物性中未列 ESCR，故不能在抗开裂上做数值对比。",
+        pitch: "SP2320 是吹膜用茂金属 LLDPE，厂家标注高透明与光泽，耐环境应力开裂大于 1000 小时（ASTM D1693）。用于化妆品软管时，多作为管身层与 LDPE 的共混组分，用来提高光泽、透明和抗开裂表现。",
+        caveat: "厂家公开应用表将层合软管推荐为 Evolue SP4020，挤出管推荐为 SP2530S（有经销资料将其标为化妆品软管封尾专用）。本栏说明的是 SP2320 在管身层中的改性用法，供打样参考，不替代厂家官方管材推荐。"
+      }
+    ]
   };
 
   const MATCH = {
@@ -1500,7 +1588,8 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
     jumpedFrom: "",
     searchOpen: false,
     searchHits: [],
-    activeHit: 0
+    activeHit: 0,
+    industryId: ""
   };
 
   const $navSearch = document.getElementById("search");
@@ -1519,6 +1608,16 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
   }
 
   function metaOf(id) { return META[id] || {}; }
+  function industriesOf(g) {
+    const id = typeof g === "string" ? g : (g && g.grade);
+    return (INDUSTRIES[id] || []).slice();
+  }
+  function industryById(g, id) {
+    const list = industriesOf(g);
+    if (!list.length) return null;
+    return list.filter(function (x) { return x.id === id; })[0] || list[0];
+  }
+
   function catOf(id) { return CAT[metaOf(id).category] || CAT.mpe; }
   function matchOf(ours, theirs) {
     const exact = MATCH[ours + "|" + theirs];
@@ -1701,7 +1800,8 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
   function emptyQuote() {
     return {
       customer: "", price: "", qty: "", delivery: "", validity: "", remarks: "",
-      includeInfo: true, includeCmp: true, includeQuote: true, comps: null
+      includeInfo: true, includeCmp: true, includeQuote: true,
+      includeIndustry: true, industrySel: "", comps: null
     };
   }
   function formatMoney(n) {
@@ -1741,6 +1841,7 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
     if (q.includeInfo) parts.push("资料");
     if (q.includeCmp) parts.push("对比");
     if (q.includeQuote) parts.push("报价");
+    if (q.includeIndustry) parts.push("行业用途");
     const mid = parts.join("与") || "资料";
     const customer = filenameSafe(q.customer || "");
     const d = new Date();
@@ -1935,6 +2036,67 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
     }).join("");
   }
 
+  function industryBodyHtml(ind) {
+    if (!ind) return "";
+    let html = '<p class="industry-pitch">' + esc(ind.pitch) + "</p>";
+    html += '<div class="panel" style="margin-bottom:16px"><h2>主要作用</h2><div class="tags" style="margin-bottom:0">';
+    (ind.keyBenefits || []).forEach(function (b) { html += '<span class="tag">' + esc(b) + "</span>"; });
+    html += "</div></div>";
+    html += '<div class="panel" style="margin-bottom:16px"><h2>用在哪些部位</h2><ul class="list">';
+    (ind.applications || []).forEach(function (a) { html += "<li>" + esc(a) + "</li>"; });
+    html += "</ul></div>";
+    html += '<div class="panel"><h2>为何有效</h2>';
+    (ind.whyItWorks || []).forEach(function (w) {
+      html += '<div class="why-item"><div class="wb">' + esc(w.benefit) + "</div><p>" + esc(w.detail) + "</p></div>";
+    });
+    html += "</div>";
+    if (ind.competitorsNote) {
+      html += '<div class="panel" style="margin-top:16px"><h2>本行业竞品对照</h2><p class="industry-comp">' + esc(ind.competitorsNote) + "</p></div>";
+    }
+    if (ind.caveat) {
+      html += '<p class="industry-note">' + esc(ind.caveat) + "</p>";
+    }
+    return html;
+  }
+  function industrySectionHtml(g) {
+    const list = industriesOf(g);
+    if (!list.length) return "";
+    const current = list.some(function (x) { return x.id === state.industryId; }) ? state.industryId : list[0].id;
+    state.industryId = current;
+    const tabs = list.map(function (ind) {
+      return '<button type="button" class="chip' + (ind.id === current ? " active" : "") + '" data-industry="' + esc(ind.id) + '">' + esc(ind.name) + "</button>";
+    }).join("");
+    const ind = industryById(g, current);
+    return '<section class="section" id="industry-sec"><h2>行业用途</h2>' +
+      '<div class="industry-tabs">' + tabs + "</div>" +
+      '<div id="industry-body">' + industryBodyHtml(ind) + "</div></section>";
+  }
+  function printIndustryHtml(ind) {
+    if (!ind) return "";
+    let html = '<section class="ps-sec"><h2>行业用途 · ' + esc(ind.name) + "</h2>";
+    if (ind.pitch) html += '<p class="ps-pitch">' + esc(ind.pitch) + "</p>";
+    if (ind.applications && ind.applications.length) {
+      html += "<h3 style=\"font-size:10pt;margin:8px 0 4px;color:#1a4548\">用在哪些部位</h3><ul class=\"ps-ul\">";
+      ind.applications.forEach(function (a) { html += "<li>" + esc(a) + "</li>"; });
+      html += "</ul>";
+    }
+    if (ind.keyBenefits && ind.keyBenefits.length) {
+      html += "<h3 style=\"font-size:10pt;margin:8px 0 4px;color:#1a4548\">主要作用</h3><p class=\"ps-pitch\">" + esc(ind.keyBenefits.join(" · ")) + "</p>";
+    }
+    if (ind.whyItWorks && ind.whyItWorks.length) {
+      html += "<h3 style=\"font-size:10pt;margin:8px 0 4px;color:#1a4548\">为何有效</h3>";
+      ind.whyItWorks.forEach(function (w) {
+        html += '<p class="ps-why"><strong>' + esc(w.benefit) + "：</strong>" + esc(w.detail) + "</p>";
+      });
+    }
+    if (ind.competitorsNote) {
+      html += "<h3 style=\"font-size:10pt;margin:8px 0 4px;color:#1a4548\">本行业竞品对照</h3><p class=\"ps-pitch\">" + esc(ind.competitorsNote) + "</p>";
+    }
+    if (ind.caveat) html += '<p class="ps-caveat">' + esc(ind.caveat) + "</p>";
+    html += "</section>";
+    return html;
+  }
+
   function renderHome() {
     const list = GRADES.filter(function (g) {
       if (state.category !== "all" && metaOf(g.grade).category !== state.category) return false;
@@ -2080,6 +2242,27 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
     const includeInfo = q.includeInfo !== false;
     const includeCmp = q.includeCmp !== false;
     const includeQuote = q.includeQuote !== false;
+    const indList = industriesOf(g);
+    if (indList.length && !indList.some(function (x) { return x.id === state.industryId; })) {
+      state.industryId = indList[0].id;
+    }
+    const includeIndustry = indList.length ? q.includeIndustry !== false : false;
+    const industrySel = (q.industrySel && (q.industrySel === "all" || indList.some(function (x) { return x.id === q.industrySel; })))
+      ? q.industrySel
+      : (state.industryId || (indList[0] && indList[0].id) || "");
+    const industryToggle = !indList.length ? "" : (
+      '<label><input type="checkbox" id="ex-industry"' + (includeIndustry ? " checked" : "") + "> 行业用途</label>"
+    );
+    const industrySelHtml = !indList.length ? "" : (
+      '<div class="industry-export' + (includeIndustry ? "" : " is-off") + '" id="industry-export">' +
+        '<label for="ex-industry-sel">纳入的行业</label>' +
+        '<select class="select" id="ex-industry-sel">' +
+          '<option value="all"' + (industrySel === "all" ? " selected" : "") + ">全部行业</option>" +
+          indList.map(function (ind) {
+            return '<option value="' + esc(ind.id) + '"' + (industrySel === ind.id ? " selected" : "") + ">" + esc(ind.name) + "</option>";
+          }).join("") +
+        "</select></div>"
+    );
     const chosen = Array.isArray(q.comps) ? q.comps : comps.map(function (c) { return c.grade; });
     const compChecks = comps.map(function (c) {
       const tag = matchOf(g.grade, c.grade);
@@ -2125,7 +2308,9 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
               '<label><input type="checkbox" id="ex-info"' + (includeInfo ? " checked" : "") + "> 资料</label>" +
               '<label><input type="checkbox" id="ex-cmp"' + (includeCmp ? " checked" : "") + "> 对比</label>" +
               '<label><input type="checkbox" id="ex-quote"' + (includeQuote ? " checked" : "") + "> 报价</label>" +
+              industryToggle +
             "</div>" +
+            industrySelHtml +
             '<div class="comp-picks' + (includeCmp ? "" : " is-off") + '" id="comp-picks">' +
               '<div class="comp-picks-head"><span>纳入对比的竞品</span><button type="button" id="ex-comps-all">全选</button></div>' +
               '<div class="comp-list">' + (compChecks || '<span class="muted">暂无竞品</span>') + "</div>" +
@@ -2143,6 +2328,8 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
           '<div class="panel"><h2>典型用途</h2><ul class="list">' + (apps || "<li class=\"muted\">—</li>") + "</ul></div>" +
           '<div class="panel"><h2>卖点</h2><ul class="list">' + (feats || "<li class=\"muted\">—</li>") + "</ul></div>" +
         "</div></section>" +
+
+        industrySectionHtml(g) +
 
         '<section class="section"><div class="source-box"><strong>资料来源</strong>（主数据源见首条）<ul>' + srcItems + "</ul></div></section>" +
 
@@ -2185,6 +2372,8 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
       includeInfo: checked("ex-info", true),
       includeCmp: checked("ex-cmp", true),
       includeQuote: checked("ex-quote", true),
+      includeIndustry: checked("ex-industry", true),
+      industrySel: get("ex-industry-sel"),
       comps: comps
     };
     if (g) {
@@ -2224,6 +2413,7 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
     const today = formatDateCN(new Date());
     const docParts = [];
     if (q.includeInfo) docParts.push("牌号资料");
+    if (q.includeIndustry) docParts.push("行业用途");
     if (q.includeCmp) docParts.push("竞品对比");
     if (q.includeQuote) docParts.push("报价单");
     const docName = docParts.join(" · ") || "牌号资料";
@@ -2270,6 +2460,17 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
       });
       html += "</tbody></table>";
       html += "</section>";
+    }
+
+    if (q.includeIndustry) {
+      const list = industriesOf(g);
+      const pick = q.industrySel;
+      const chosen = (!pick || pick === "all") ? list : list.filter(function (x) { return x.id === pick; });
+      if (!chosen.length) {
+        html += '<section class="ps-sec"><h2>行业用途</h2><p class="ps-pitch">未选择需要导出的行业。</p></section>';
+      } else {
+        chosen.forEach(function (ind) { html += printIndustryHtml(ind); });
+      }
     }
 
     if (q.includeCmp) {
@@ -2346,8 +2547,8 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
 
   function exportPdf(g) {
     const q = readQuoteForm(g);
-    if (!q.includeInfo && !q.includeCmp && !q.includeQuote) {
-      toast("请至少勾选一项：资料、对比或报价");
+    if (!q.includeInfo && !q.includeCmp && !q.includeQuote && !q.includeIndustry) {
+      toast("请至少勾选一项：资料、对比、报价或行业用途");
       return;
     }
     if (q.includeCmp && (g.competitors || []).length && !(q.comps && q.comps.length)) {
@@ -2625,6 +2826,24 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
       document.getElementById("chart-body").innerHTML = renderBars(g, state.chartKey);
       return;
     }
+    const indBtn = e.target.closest("[data-industry]");
+    if (indBtn) {
+      const route = parseRoute();
+      const g = byId[route.id];
+      if (!g) return;
+      state.industryId = indBtn.getAttribute("data-industry");
+      document.querySelectorAll("[data-industry]").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-industry") === state.industryId);
+      });
+      const body = document.getElementById("industry-body");
+      if (body) body.innerHTML = industryBodyHtml(industryById(g, state.industryId));
+      const sel = document.getElementById("ex-industry-sel");
+      if (sel) {
+        sel.value = state.industryId;
+        readQuoteForm(g);
+      }
+      return;
+    }
     if (e.target.closest("#btn-export")) {
       const route = parseRoute();
       const g = byId[route.id];
@@ -2644,12 +2863,16 @@ table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
   $main.addEventListener("change", function (e) {
     const t = e.target;
     if (!t) return;
-    if (t.id === "ex-info" || t.id === "ex-cmp" || t.id === "ex-quote" || t.getAttribute("data-comp")) {
+    if (t.id === "ex-info" || t.id === "ex-cmp" || t.id === "ex-quote" || t.id === "ex-industry" || t.id === "ex-industry-sel" || t.getAttribute("data-comp")) {
       const route = parseRoute();
       const g = byId[route.id];
       if (g) readQuoteForm(g);
       if (t.id === "ex-cmp") {
         const box = document.getElementById("comp-picks");
+        if (box) box.classList.toggle("is-off", !t.checked);
+      }
+      if (t.id === "ex-industry") {
+        const box = document.getElementById("industry-export");
         if (box) box.classList.toggle("is-off", !t.checked);
       }
     }
