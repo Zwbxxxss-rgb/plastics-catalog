@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>文博塑料 · 牌号资料库</title>
+  <style>
+
+:root {
+  --bg: #f3f1ec;
+  --bg-accent: #ebe7e0;
+  --surface: #fffcf8;
+  --surface-2: #f7f4ee;
+  --ink: #1c1916;
+  --ink-2: #4a453e;
+  --ink-3: #7a746b;
+  --line: #e6e1d8;
+  --line-2: #d4cec4;
+  --brand: #1a4548;
+  --brand-2: #2a6a6e;
+  --brand-soft: #e7f1f1;
+  --brand-ink: #123538;
+  --copper: #b85e28;
+  --copper-soft: #f8eee6;
+  --navy: #1e3f63;
+  --navy-soft: #e8eef6;
+  --ok: #1a6b4a;
+  --ok-bg: #e6f4ed;
+  --mid: #1d4f86;
+  --mid-bg: #e8f0f8;
+  --ref: #7a5c1e;
+  --ref-bg: #f6f0e0;
+  --no: #8f2f2f;
+  --no-bg: #f8ecec;
+  --shadow: 0 1px 2px rgba(28, 25, 22, 0.04), 0 10px 28px rgba(28, 25, 22, 0.06);
+  --shadow-hover: 0 2px 6px rgba(28, 25, 22, 0.06), 0 16px 36px rgba(28, 25, 22, 0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --nav-h: 68px;
+  --font: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Source Han Sans SC",
+    "Microsoft YaHei UI", "Microsoft YaHei", "Helvetica Neue", system-ui, sans-serif;
+  --mono: "SF Mono", "Menlo", "Consolas", "Sarasa Gothic SC", "Noto Sans Mono CJK SC", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background:
+    radial-gradient(1100px 520px at 8% -8%, rgba(42, 106, 110, 0.10), transparent 55%),
+    radial-gradient(900px 420px at 100% 0%, rgba(184, 94, 40, 0.06), transparent 50%),
+    var(--bg);
+  min-height: 100vh;
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button, input, select { font-family: inherit; }
+button { cursor: pointer; }
+a { color: var(--brand-2); text-decoration: none; }
+a:hover { color: var(--brand); }
+
+.app { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ——— Nav ——— */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--nav-h);
+  background: rgba(255, 252, 248, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  max-width: 1180px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--brand-ink);
+  font-weight: 600;
+  font-size: 15.5px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.brand:hover { color: var(--brand-ink); }
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(160deg, #2a6a6e, #1a4548);
+  color: #f7f4ee;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 520px;
+  margin-left: auto;
+}
+.search-wrap input {
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--line-2);
+  background: #fff;
+  border-radius: 999px;
+  padding: 0 16px 0 42px;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .18s, box-shadow .18s;
+}
+.search-wrap input::placeholder { color: #9a948b; }
+.search-wrap input:focus {
+  border-color: #8ab3b5;
+  box-shadow: 0 0 0 3px rgba(42, 106, 110, 0.16);
+}
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--ink-3);
+  pointer-events: none;
+}
+.search-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow-hover);
+  overflow: hidden;
+  z-index: 50;
+}
+.search-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 11px 14px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.search-item:last-child { border-bottom: 0; }
+.search-item:hover, .search-item.active { background: var(--brand-soft); }
+.search-item .si-name { font-weight: 600; font-size: 13.5px; letter-spacing: 0.01em; }
+.search-item .si-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.search-item .si-tag {
+  flex-shrink: 0;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+.search-empty, .search-hint {
+  padding: 14px 16px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+/* ——— Main ——— */
+.main {
+  flex: 1;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 28px 48px;
+}
+.view { animation: rise .32s ease; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .view { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ——— Home ——— */
+.home-hero { margin-bottom: 8px; }
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--brand-2);
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.home-hero h1 {
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+.home-hero p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 15.5px;
+  max-width: 36em;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 28px 0 22px;
+}
+.chip {
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--ink-2);
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background .15s, border-color .15s, color .15s, box-shadow .15s;
+}
+.chip:hover { border-color: var(--brand-2); color: var(--brand); }
+.chip.active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #f6fffe;
+  box-shadow: 0 1px 2px rgba(26, 69, 72, 0.25);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 18px 14px;
+  box-shadow: var(--shadow);
+  text-align: left;
+  color: inherit;
+  min-height: 216px;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--cat, var(--brand-2));
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: #c9d6d4;
+}
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.card-id {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.cat-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--cat-bg, var(--brand-soft));
+  color: var(--cat-ink, var(--brand));
+}
+.card-maker { margin: 0 0 8px; font-size: 13px; color: var(--ink-3); }
+.card-line { margin: 0 0 12px; font-size: 13.5px; color: var(--ink-2); line-height: 1.55; flex: 1; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.tag {
+  font-size: 11.5px;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: auto;
+}
+.specs.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.spec .sv {
+  font-size: 16px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.spec .su { font-size: 11px; color: var(--ink-3); font-weight: 500; margin-left: 2px; }
+.spec .sl { display: block; font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+
+/* ——— Detail ——— */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 500;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin-bottom: 22px;
+}
+.back:hover { color: var(--brand); }
+.jump-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--brand-soft);
+  border: 1px solid #cfe0e0;
+  color: var(--brand-ink);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 13.5px;
+  margin-bottom: 20px;
+}
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+.hero-left { min-width: 0; flex: 1; }
+.hero h1 {
+  margin: 0 0 6px;
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.hero-meta {
+  color: var(--ink-2);
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+.hero-meta span + span::before {
+  content: "·";
+  margin: 0 8px;
+  color: var(--ink-3);
+}
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  flex-shrink: 0;
+  min-width: 240px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 11px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: transform .12s, background .15s, box-shadow .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+  background: var(--brand);
+  color: #f7fffe;
+  box-shadow: 0 1px 2px rgba(26, 69, 72, 0.3);
+}
+.btn-primary:hover { background: #15383b; color: #f7fffe; }
+.btn-ghost {
+  background: var(--surface);
+  border-color: var(--line-2);
+  color: var(--ink-2);
+}
+.btn-ghost:hover { border-color: var(--brand-2); color: var(--brand); }
+.select {
+  height: 42px;
+  border-radius: 11px;
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  padding: 0 12px;
+  font-size: 13px;
+  color: var(--ink-2);
+  outline: none;
+  width: 100%;
+}
+.select:focus { border-color: #8ab3b5; box-shadow: 0 0 0 3px rgba(42, 106, 110, 0.16); }
+
+.section { margin-bottom: 28px; }
+.section h2 {
+  font-size: 15px;
+  font-weight: 650;
+  margin: 0 0 14px;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+}
+
+.prop-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.prop-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px 15px;
+  box-shadow: 0 1px 2px rgba(28,25,22,0.03);
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+}
+.prop-card .pl {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+.prop-card .pv {
+  font-size: 24px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.prop-card .pv .u {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+.prop-card .pm {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.list { margin: 0; padding: 0; list-style: none; }
+.list li {
+  position: relative;
+  padding: 0 0 9px 16px;
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.list li:last-child { padding-bottom: 0; }
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-2);
+  opacity: 0.7;
+}
+
+.source-box {
+  background: var(--surface-2);
+  border: 1px dashed var(--line-2);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.source-box strong { color: var(--ink); font-weight: 650; }
+.source-box ul { margin: 6px 0 0; padding-left: 18px; }
+.source-box li { margin: 3px 0; }
+
+.warn {
+  background: var(--ref-bg);
+  border: 1px solid #ead9b0;
+  color: #5c4514;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+
+/* table */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+table.cmp {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+  font-size: 13px;
+}
+table.cmp th, table.cmp td {
+  padding: 11px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+table.cmp th {
+  background: var(--surface-2);
+  font-weight: 650;
+  font-size: 12.5px;
+  color: var(--ink);
+}
+table.cmp tr:last-child td { border-bottom: 0; }
+table.cmp td.num, table.cmp th.num { font-variant-numeric: tabular-nums; }
+table.cmp .ours { background: #f3f8f8; }
+table.cmp th.sticky, table.cmp td.sticky {
+  position: sticky;
+  left: 0;
+  background: var(--surface);
+  z-index: 1;
+  min-width: 108px;
+  box-shadow: 4px 0 8px -6px rgba(28,25,22,0.12);
+}
+table.cmp th.sticky { background: var(--surface-2); }
+table.cmp td.ours, table.cmp th.ours { background: #eef5f5; }
+table.cmp th.ours.sticky { background: #e8f1f1; }
+.th-grade { display: block; font-weight: 650; }
+.th-maker { display: block; font-weight: 400; color: var(--ink-3); font-size: 11px; margin-top: 2px; }
+.cell-val { font-weight: 550; color: var(--ink); }
+.cell-unit { color: var(--ink-3); font-size: 11px; }
+.cell-miss { color: #b0aaa2; }
+.note-row td { color: var(--ink-2); font-size: 12.5px; line-height: 1.5; background: #fbfaf7; }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 650;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-top: 6px;
+  white-space: nowrap;
+}
+.badge-closest { background: var(--ok-bg); color: var(--ok); }
+.badge-alt { background: var(--mid-bg); color: var(--mid); }
+.badge-ref { background: var(--ref-bg); color: var(--ref); }
+.badge-no { background: var(--no-bg); color: var(--no); }
+
+/* bars */
+.chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.seg {
+  display: inline-flex;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+.seg button {
+  border: 0;
+  background: transparent;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--ink-2);
+}
+.seg button.active {
+  background: var(--surface);
+  color: var(--brand-ink);
+  box-shadow: 0 1px 2px rgba(28,25,22,0.08);
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 148px 1fr 86px;
+  gap: 12px;
+  align-items: center;
+  margin: 9px 0;
+}
+.bar-name { font-size: 12.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-name.ours { color: var(--brand-ink); font-weight: 650; }
+.bar-track {
+  height: 10px;
+  background: #ece8e1;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #c5cdc9;
+  width: 0;
+  transition: width .45s ease;
+}
+.bar-fill.ours { background: linear-gradient(90deg, #2a6a6e, #1a4548); }
+.bar-val { font-size: 12.5px; font-variant-numeric: tabular-nums; color: var(--ink-2); text-align: right; }
+.bar-empty { font-size: 13px; color: var(--ink-3); padding: 8px 0; }
+
+/* quote */
+.quote details {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 4px 18px 4px;
+}
+.quote summary {
+  cursor: pointer;
+  font-weight: 650;
+  font-size: 14px;
+  padding: 12px 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--ink);
+}
+.quote summary::-webkit-details-marker { display: none; }
+.quote summary::after {
+  content: "展开";
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.quote details[open] summary::after { content: "收起"; }
+.quote-body { padding: 0 0 16px; }
+.quote-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  padding: 0 12px;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+  font-variant-numeric: tabular-nums;
+}
+.field input:focus { border-color: #8ab3b5; box-shadow: 0 0 0 3px rgba(42, 106, 110, 0.16); }
+.total-box {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-ink);
+}
+.quote-hint { margin: 8px 0 0; font-size: 12px; color: var(--ink-3); }
+
+/* footer + toast */
+.site-footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px 40px;
+  color: var(--ink-3);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--brand-ink);
+  color: #f6fffe;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 550;
+  box-shadow: var(--shadow-hover);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  z-index: 80;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.muted { color: var(--ink-3); }
+
+@media (max-width: 980px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .prop-grid { grid-template-columns: repeat(2, 1fr); }
+  .split, .quote-grid { grid-template-columns: 1fr; }
+  .hero { flex-direction: column; }
+  .hero-actions { min-width: 0; width: 100%; }
+  .home-hero h1 { font-size: 28px; }
+  .hero h1 { font-size: 32px; }
+}
+@media (max-width: 640px) {
+  :root { --nav-h: auto; }
+  .nav { height: auto; }
+  .nav-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 16px 14px;
+  }
+  .search-wrap { max-width: none; margin-left: 0; }
+  .main { padding: 22px 16px 56px; }
+  .site-footer { padding: 0 16px 28px; }
+  .grid { grid-template-columns: 1fr; }
+  .home-hero h1 { font-size: 26px; }
+  .hero h1 { font-size: 28px; }
+  .bar-row { grid-template-columns: 1fr; gap: 4px; }
+  .bar-val { text-align: left; }
+  .specs { grid-template-columns: repeat(3, 1fr); }
+  .prop-card .pv { font-size: 22px; }
+  .card { min-height: 0; }
+}
+
+.subbar {
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 252, 248, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.subbar[hidden] { display: none !important; }
+.subbar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 28px;
+}
+.subbar .filters { margin: 0; }
+.prop-card .pm {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+table.cmp td.sticky, table.cmp th.sticky { min-width: 132px; max-width: 168px; }
+@media (max-width: 640px) {
+  .subbar-inner { padding: 10px 16px; }
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .chip { flex-shrink: 0; }
+}
+
+.hero-maker {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: var(--ink-2);
+  font-weight: 550;
+}
+.hero-type {
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  max-width: 44em;
+}
+.footnotes {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+.footnotes li {
+  position: relative;
+  padding: 3px 0 3px 14px;
+}
+.footnotes li::before {
+  content: "※";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  font-size: 11px;
+  color: #b0aaa2;
+}
+.match-notes {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.match-note {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 13px 16px;
+}
+.match-note .mh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.match-note .mh strong { font-size: 13.5px; font-weight: 650; }
+.match-note p { margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+.swipe-hint {
+  display: none;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin: 0 0 8px;
+}
+table.cmp td .cell-wrap { white-space: nowrap; }
+table.cmp th { min-width: 118px; }
+table.cmp th.ours, table.cmp td.ours { min-width: 96px; }
+.home-hero p { max-width: 44em; }
+@media (max-width: 980px) {
+  .match-notes { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .swipe-hint { display: block; }
+  .hero-maker { font-size: 15px; }
+}
+
+  
+/* ——— Export dock (quote + PDF) ——— */
+.export-dock {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 16px;
+  margin: 0 0 28px;
+}
+.export-col {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 20px 18px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.export-col .export-actions { margin-top: auto; }
+.export-col h2 {
+  font-size: 15px;
+  font-weight: 650;
+  margin: 0 0 14px;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.qf-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
+  gap: 10px 12px;
+}
+.qf-grid .span-2 { grid-column: span 2; }
+.qf-grid .span-4 { grid-column: span 4; }
+.field textarea {
+  width: 100%;
+  min-height: 64px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+  resize: vertical;
+  line-height: 1.5;
+}
+.field textarea:focus,
+.field input:focus {
+  border-color: #8ab3b5;
+  box-shadow: 0 0 0 3px rgba(42, 106, 110, 0.16);
+}
+.sec-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.sec-toggles label,
+.comp-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  cursor: pointer;
+  user-select: none;
+}
+.sec-toggles label {
+  border: 1px solid var(--line-2);
+  background: var(--surface-2);
+  border-radius: 999px;
+  height: 34px;
+  padding: 0 12px 0 10px;
+  font-weight: 550;
+}
+.sec-toggles label:has(input:checked) {
+  background: var(--brand-soft);
+  border-color: #b7d0d0;
+  color: var(--brand-ink);
+}
+.sec-toggles input,
+.comp-item input {
+  accent-color: var(--brand);
+  width: 15px;
+  height: 15px;
+  margin: 0;
+}
+.comp-picks-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+.comp-picks-head button {
+  border: 0;
+  background: none;
+  color: var(--brand-2);
+  font-size: 12.5px;
+  font-weight: 550;
+  padding: 0;
+}
+.comp-picks-head button:hover { color: var(--brand); }
+.comp-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+  margin-bottom: 16px;
+  max-height: 132px;
+  overflow: auto;
+}
+.comp-item {
+  min-width: 0;
+  padding: 4px 0;
+}
+.comp-item .cn {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.comp-item .badge { margin-top: 0; flex-shrink: 0; }
+.comp-picks.is-off { opacity: 0.45; pointer-events: none; }
+.export-actions { display: flex; flex-direction: column; gap: 8px; }
+.export-hint {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.55;
+}
+#print-sheet { display: none; }
+
+@media (max-width: 980px) {
+  .export-dock { grid-template-columns: 1fr; }
+  .qf-grid { grid-template-columns: 1fr 1fr; }
+  .qf-grid .span-2, .qf-grid .span-4 { grid-column: span 2; }
+  .comp-list { grid-template-columns: 1fr; max-height: none; }
+}
+@media (max-width: 640px) {
+  .qf-grid { grid-template-columns: 1fr; }
+  .qf-grid .span-2, .qf-grid .span-4 { grid-column: span 1; }
+}
+
+/* ——— Print / PDF (A4) ——— */
+@page {
+  size: A4;
+  margin: 12mm 14mm 14mm;
+}
+@media print {
+  html, body {
+    background: #fff !important;
+    margin: 0;
+    padding: 0;
+    font-size: 10.5pt;
+    color: #1c1916;
+  }
+  .app, .toast, .search-pop { display: none !important; }
+  #print-sheet {
+    display: block !important;
+    background: #fff;
+    color: #1c1916;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei",
+      "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans SC", sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+#print-sheet {
+  display: none;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei",
+    "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans SC", sans-serif;
+  color: #1c1916;
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.ps-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 2.5px solid #1a4548;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+.ps-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16pt;
+  font-weight: 700;
+  color: #123538;
+  letter-spacing: 0.04em;
+}
+.ps-brand .ps-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: #1a4548;
+  color: #f7f4ee;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11pt;
+  font-weight: 700;
+}
+.ps-head-meta {
+  text-align: right;
+  font-size: 9pt;
+  color: #4a453e;
+  line-height: 1.45;
+}
+.ps-head-meta .ps-doc {
+  font-weight: 650;
+  color: #1a4548;
+  font-size: 10pt;
+}
+.ps-disc-top {
+  margin: 6px 0 10px;
+  font-size: 8.5pt;
+  color: #7a746b;
+}
+.ps-grade h1 {
+  margin: 0 0 3px;
+  font-size: 20pt;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #1c1916;
+}
+.ps-maker {
+  margin: 0 0 2px;
+  font-size: 11pt;
+  font-weight: 600;
+  color: #1a4548;
+}
+.ps-type, .ps-legal {
+  margin: 0 0 2px;
+  font-size: 9.5pt;
+  color: #4a453e;
+}
+.ps-line {
+  margin: 8px 0 0;
+  font-size: 10.5pt;
+  color: #1c1916;
+}
+.ps-tags {
+  margin: 8px 0 0;
+  font-size: 9pt;
+  color: #4a453e;
+}
+.ps-sec {
+  margin: 12px 0 0;
+}
+.ps-sec h2 {
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: #123538;
+  margin: 0 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #d4cec4;
+  letter-spacing: 0.04em;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+.ps-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+.ps-split h3 {
+  font-size: 10pt;
+  margin: 0 0 4px;
+  color: #1a4548;
+}
+.ps-ul {
+  margin: 0;
+  padding: 0 0 0 1.1em;
+}
+.ps-ul li {
+  font-size: 9.5pt;
+  margin: 0 0 2px;
+  color: #1c1916;
+}
+.ps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  margin: 0;
+  break-inside: auto;
+  page-break-inside: auto;
+}
+.ps-table th, .ps-table td {
+  border: 1px solid #cfc8bd;
+  padding: 4px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+.ps-table th {
+  background: #eef5f5;
+  font-weight: 650;
+  color: #123538;
+}
+.ps-table .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ps-table thead { display: table-header-group; }
+.ps-table tr { break-inside: avoid; page-break-inside: avoid; }
+.ps-ours { background: #f3f8f8; font-weight: 550; }
+.ps-badge {
+  display: inline-block;
+  font-size: 8pt;
+  font-weight: 650;
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+.ps-badge.closest { background: #e6f4ed; color: #1a6b4a; }
+.ps-badge.alt { background: #e8f0f8; color: #1d4f86; }
+.ps-badge.ref { background: #f6f0e0; color: #7a5c1e; }
+.ps-badge.no { background: #f8ecec; color: #8f2d2d; }
+.ps-notes { margin: 6px 0 0; }
+.ps-notes p {
+  margin: 0 0 3px;
+  font-size: 8pt;
+  color: #4a453e;
+  line-height: 1.4;
+}
+.ps-notes strong { color: #1c1916; }
+.ps-kv {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10pt;
+}
+.ps-kv th, .ps-kv td {
+  border: 1px solid #cfc8bd;
+  padding: 5px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+.ps-kv th {
+  width: 28%;
+  background: #eef5f5;
+  font-weight: 650;
+  color: #123538;
+}
+.ps-kv .total {
+  font-weight: 700;
+  font-size: 12pt;
+  color: #123538;
+  font-variant-numeric: tabular-nums;
+}
+.ps-quote { break-inside: avoid; page-break-inside: avoid; }
+.ps-foot {
+  margin-top: 12px;
+  padding-top: 6px;
+  border-top: 1px solid #d4cec4;
+  font-size: 8pt;
+  color: #7a746b;
+  line-height: 1.5;
+}
+.ps-foot .ps-sign {
+  margin-top: 6px;
+  color: #4a453e;
+}
+.ps-warn {
+  background: #f6f0e0;
+  border: 1px solid #ead9b0;
+  color: #5c4514;
+  padding: 6px 8px;
+  font-size: 8.5pt;
+  margin: 0 0 8px;
+  line-height: 1.45;
+}
+
+.ps-table th:first-child, .ps-table td:first-child { width: 18%; }
+.ps-maker-line { font-weight: 400; color: #7a746b; font-size: 7.5pt; margin-top: 1px; line-height: 1.3; }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#/">
+          <span class="brand-mark">文</span>
+          文博塑料 · 牌号资料库
+        </a>
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="搜索牌号或竞品" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="搜索牌号或竞品">
+          <div id="search-pop" class="search-pop" hidden></div>
+        </div>
+      </div>
+    </header>
+    <div class="subbar" id="subbar">
+      <div class="subbar-inner">
+        <div id="filters" class="filters" role="tablist" aria-label="材料分类"></div>
+      </div>
+    </div>
+    <main id="main" class="main"></main>
+    <footer class="site-footer">物性数值来自公开技术资料与厂家物性表，均为典型值或参考值，仅供对照，不构成规格保证。未找到的项目以 — 表示，不推测、不编造。具体以厂家正式物性表和合同约定为准。测试方法与样条条件不同时，牌号之间不可直接当作规格对比。</footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="print-sheet" aria-hidden="true"></div>
+  <script type="application/json" id="payload">{"generated_at":"2026-11-11","timezone":"Asia/Shanghai (UTC+8)","disclaimer":"全部数值均来自注明来源的公开物性表或用户提供的原件，均为典型/代表值、非保证规格。未找到的项目记为 null，不推测、不编造。测试方法与样条制备条件不同，牌号之间不可直接当作规格对比。替换前需打样验证。","grades":[{"grade":"SP1071C","brand":"Evolue","manufacturer":"Prime Evolue Singapore Pte. Ltd. / Prime Polymer Co., Ltd.（普瑞曼聚合物，三井化学与出光合资）","polymer_type":"茂金属线性低密度聚乙烯 mLLDPE（乙烯-己烯共聚，C6）","typical_applications":["挤出复合 / 挤出涂覆","食品与液体包装（厂家推荐）"],"features":["低温热封","机械强度","高速成型","粘接性好"],"properties":{"mfr":{"value":10,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133"},"density":{"value":911,"unit":"kg/m³","method":"ISO 1183","note":"合 0.911 g/cm³。用户系列总表与 Prime Polymer 2024 官方吹膜/挤出总表记为 910 kg/m³，以单页 TDS 为准。"},"tensile_strength_yield":{"value":null,"unit":"MPa","method":"ISO 527-1, ISO 527-2","note":"原表为 —"},"tensile_strength_break":{"value":">15","unit":"MPa","method":"ISO 527-1, ISO 527-2"},"tensile_elongation_break":{"value":">500","unit":"%","method":"ISO 527-1, ISO 527-2"},"flexural_modulus":{"value":150,"unit":"MPa","method":"ISO 178"},"charpy_impact":{"value":"NB","unit":"kJ/m²","method":"ISO 179-1","note":"未断裂"},"izod_impact":{"value":null},"shore_d":{"value":51,"method":"ISO 868"},"vicat":{"value":87,"unit":"°C","method":"ISO 306"},"hdt":{"value":null,"note":"未提供"},"melting_point":{"value":101,"unit":"°C","method":"ISO 11357-3"},"escr":{"value":">1000","unit":"h","method":"ASTM D1693"}},"sources":[{"title":"Evolue SP1071C Technical Data Sheet（2017-02-01，用户原件，主数据源）","path":"/workspace/datasheets/Evolue-SP1071C-物性表.pdf"},{"title":"物性汇总.md（按原件核对）","path":"/workspace/datasheets/物性汇总.md"},{"title":"Evolue 系列介绍及总表（扫描件，对照；密度 910、熔点 100、维卡 88、弹性模量 130、硬度 50，与 TDS 略有差异）","path":"/workspace/datasheets/Evolue-系列介绍及总表.pdf"},{"title":"Prime Polymer Evolue 吹膜/挤出牌号物性表（2024-07）","url":"https://www.primepolymer.co.jp/content/dam/mitsuichemicals/sites/primepolymer/documents/common/product/pe/evolue-fo_20240718.pdf"},{"title":"Mitsui Plastics Evolue 应用推荐（挤出涂覆：SP1071C、GX0107）","url":"https://mitsuiplastics.com/evolue/"}],"competitors":[{"grade":"KERNEL KC570S","manufacturer":"Japan Polyethylene（日本聚乙烯）","polymer_type":"茂金属聚乙烯塑性体 / 茂金属 PE（KERNEL 系列，挤出复合）","properties":{"mfr":{"value":10,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1872-2 / JIS K 6922-2"},"density":{"value":0.906,"unit":"g/cm³","method":"ISO 1872-1,2 / JIS K 7112"},"tensile_strength_yield":{"value":"No-Yield","method":"ISO 1872-2"},"tensile_elongation_break":{"value":">500","unit":"%","method":"ISO 1872-2 / JIS K 6922-2"},"flexural_modulus":{"value":110,"unit":"MPa","method":"ISO 1872-2 / JIS K 6922-2"},"charpy_impact":{"value":"No-Break","unit":"kJ/m²","method":"ISO 1872-2"},"shore_d":{"value":42,"method":"ISO 868 / JIS K 7215"},"vicat":{"value":73,"unit":"°C","method":"ISO 306 / JIS K 7206"},"hdt":{"value":null},"melting_point":{"value":102,"unit":"°C","method":"ISO 11357-3 / JIS K 7121"}},"applications":["液体高速充填包材","软包装"],"sources":[{"title":"Japan Polyethylene KERNEL Metallocene Polyethylene properties (2022-10-16)","url":"https://www.j-polyethylene.com/en/cms/wp-content/uploads/2023/09/EN_properties_MetallocenePolyethyleneKN_20231016.pdf"}],"match_note":"熔指同为 10，同为挤出复合/液体包装方向，密度略低（0.906 vs 0.911），弯曲模量和维卡也偏低，偏更软、热封温度可能更低。熔指对得最齐的竞品之一，需验证涂覆加工窗口和粘接。"},{"grade":"KERNEL KC577T","manufacturer":"Japan Polyethylene（日本聚乙烯）","polymer_type":"茂金属聚乙烯（KERNEL 系列，纸板挤出复合）","properties":{"mfr":{"value":14,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1872-2 / JIS K 6922-2"},"density":{"value":0.911,"unit":"g/cm³","method":"ISO 1872-1,2 / JIS K 7112"},"tensile_elongation_break":{"value":">500","unit":"%"},"flexural_modulus":{"value":120,"unit":"MPa"},"charpy_impact":{"value":"No-Break","unit":"kJ/m²"},"shore_d":{"value":46,"method":"ISO 868"},"vicat":{"value":79,"unit":"°C","method":"ISO 306"},"hdt":{"value":null},"melting_point":{"value":102,"unit":"°C","method":"ISO 11357-3"}},"applications":["纸板挤出复合","软包装"],"sources":[{"title":"Japan Polyethylene KERNEL Metallocene Polyethylene properties (2022-10-16)","url":"https://www.j-polyethylene.com/en/cms/wp-content/uploads/2023/09/EN_properties_MetallocenePolyethyleneKN_20231016.pdf"}],"match_note":"密度与 SP1071C 完全一致（0.911），同为挤出复合；熔指更高（14 vs 10），弯曲模量略低（120 vs 150）。厂家标注易切割、低温热封。适合看重涂覆流动性的场合。"},{"grade":"ELITE 5811","manufacturer":"Dow（陶氏）","polymer_type":"增强型聚乙烯 / 茂金属线性低密度聚乙烯（挤出涂覆）","properties":{"mfr":{"value":8,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238"},"density":{"value":0.919,"unit":"g/cm³"},"vicat":{"value":102,"unit":"°C"},"hdt":{"value":null},"melting_point":{"value":124,"unit":"°C","method":"DSC, Dow Method"},"heat_seal_initiation":{"value":98,"unit":"°C"},"tensile_strength_break":{"value":null},"flexural_modulus":{"value":null}},"applications":["挤出涂覆","高性能热封层","低颈缩"],"sources":[{"title":"Dow ELITE 5811 Enhanced Polyethylene Resin product page","url":"https://www.dow.com/en-us/pdp.elite-5811-enhanced-polyethylene-resin.184759z.html"}],"match_note":"同为挤出涂覆专用料，熔指接近（8 vs 10），密度和熔点更高（0.919 / 124°C vs 0.911 / 101°C），偏更刚、更耐热，颈缩控制是其卖点。不是密度对等替换。"},{"grade":"ELITE 5815","manufacturer":"Dow（陶氏）","polymer_type":"茂金属线性低密度聚乙烯（INSITE 技术）","properties":{"mfr":{"value":15,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238"},"density":{"value":0.91,"unit":"g/cm³"},"vicat":{"value":null},"hdt":{"value":null},"melting_point":{"value":124,"unit":"°C","method":"DSC, Dow Method"},"heat_seal_initiation":{"value":90.6,"unit":"°C"}},"applications":["流延拉伸缠绕膜","挤出涂覆（类布感底膜等卫生材料）","卫生用膜"],"sources":[{"title":"Dow ELITE 5815 Enhanced Polyethylene Resin product page","url":"https://www.dow.com/en-us/pdp.elite-5815-enhanced-polyethylene-resin.116129z.html"}],"match_note":"密度几乎相同（0.910 vs 0.911），同可做挤出涂覆；熔指明显更高（15 vs 10），熔点也更高（124 vs 101）。更偏高速流延/涂覆流动性，热封起始温度较低。"},{"grade":"ELTEX PF1315AZ","manufacturer":"INEOS Olefins & Polymers Europe（英力士）","polymer_type":"C6 茂金属 LLDPE（无添加剂，挤出涂覆 / 注塑 / 造粒）","properties":{"mfr":{"value":15,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133-1"},"density":{"value":914,"unit":"kg/m³","method":"ISO 1183-1","note":"合 0.914 g/cm³"},"tensile_strength_yield":{"value":9,"unit":"MPa","method":"ISO 527-1,-2"},"tensile_strength_break":{"value":"No break","method":"ISO 527-2"},"tensile_elongation_break":{"value":">600","unit":"%","method":"ISO 527-2"},"flexural_modulus":{"value":244,"unit":"MPa","method":"ISO 178","condition":"23°C","note":"压缩成型样片。另给拉伸模量 217 MPa（ISO 527-2）。"},"izod_impact":{"value":71,"unit":"kJ/m²","method":"ISO 180/A","condition":"缺口, -20°C"},"charpy_impact":{"value":null},"shore_d":{"value":46,"method":"ISO 868"},"vicat":{"value":90,"unit":"°C","method":"ISO 306/A50","condition":"10 N"},"hdt":{"value":null},"melting_point":{"value":"96–114","unit":"°C","method":"ISO 11357-3","note":"双熔点，DSC 二次升温 10°C/min"},"escr":{"value":175,"unit":"h","method":"INEOS 内部方法","note":"方法与 ASTM D1693 不同，不可与 SP1071C 的 >1000 h 直接比较"}},"applications":["对热封和力学性能要求高的挤出涂覆","无添加剂便于自制配方/色母"],"sources":[{"title":"INEOS ELTEX PF1315AZ Product Technical Information (April 2015)","url":"https://www.ineos.com/show-document/?bu=INEOS+O+%2526+P+Europe&docLanguage=EN&documentType=Technical+Data+Sheet&grade=PF1315AZ&version=ac0335fd26c9dc8e163f67d15f90c52c"}],"match_note":"同为 C6 茂金属 LLDPE 挤出涂覆料，密度接近；熔指更高（15 vs 10），弯曲模量明显高于 SP1071C（244 vs 150，且样条条件可能不同）。适合要更高刚性的涂覆，流动性也更大。"}],"gaps":"公开资料中未找到熔指约 8–10、密度约 0.910、且有完整官方 TDS 的中国石化/石油国产挤出涂覆茂金属牌号，故本表未列入国产对标。"},{"grade":"SP2320","brand":"Evolue","manufacturer":"Prime Evolue Singapore Pte. Ltd. / Prime Polymer Co., Ltd.（普瑞曼聚合物）","polymer_type":"茂金属线性低密度聚乙烯 mLLDPE（乙烯-己烯共聚，C6）","typical_applications":["吹膜","复合膜 / 层合膜","液体自立袋","冷冻食品包装","中型包装、工业膜、农膜、水冷吹膜（系列总表/厂家推荐）"],"features":["低温热封","刚性","高透明与光泽"],"properties":{"mfr":{"value":2.0,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133","note":"用户系列总表与 Prime Polymer 2024 官方总表记为 1.9，以单页 TDS 的 2.0 为准。"},"density":{"value":920,"unit":"kg/m³","method":"ISO 1183","note":"合 0.920 g/cm³"},"tensile_strength_yield":{"value":null,"unit":"MPa","method":"ISO 527-1, ISO 527-2","note":"原表为 —"},"tensile_strength_break":{"value":19,"unit":"MPa","method":"ISO 527-1, ISO 527-2"},"tensile_elongation_break":{"value":350,"unit":"%","method":"ISO 527-1, ISO 527-2"},"flexural_modulus":{"value":240,"unit":"MPa","method":"ISO 178"},"charpy_impact":{"value":"NB","unit":"kJ/m²","method":"ISO 179-1","note":"中文 TDS 写「未破」"},"izod_impact":{"value":null},"shore_d":{"value":55,"method":"ISO 868","note":"中文单页未标明 A/D，同系列英文 TDS 按同一方法标为 Shore D"},"vicat":{"value":101,"unit":"°C","method":"ISO 306"},"hdt":{"value":null,"note":"未提供"},"melting_point":{"value":115,"unit":"°C","method":"ISO 11357-3","note":"用户系列总表记为 118，以单页 TDS 为准。"},"escr":{"value":">1000","unit":"h","method":"ASTM D1693"}},"sources":[{"title":"Evolue SP2320 技术数据表（用户原件，主数据源）","path":"/workspace/datasheets/Evolue-SP2320-物性表.pdf"},{"title":"物性汇总.md（按原件核对）","path":"/workspace/datasheets/物性汇总.md"},{"title":"Evolue 系列介绍及总表第 3 页吹膜列（对照）","path":"/workspace/datasheets/Evolue-系列介绍及总表.pdf"},{"title":"Prime Polymer Evolue 吹膜/挤出牌号物性表（2024-07，SP2320 熔指 1.9、密度 920、维卡 101、熔点 115）","url":"https://www.primepolymer.co.jp/content/dam/mitsuichemicals/sites/primepolymer/documents/common/product/pe/evolue-fo_20240718.pdf"},{"title":"Mitsui Plastics Evolue 应用推荐（自立袋/冷冻食品含 SP2320）","url":"https://mitsuiplastics.com/evolue/"}],"competitors":[{"grade":"Exceed m 2018.MA（曾用名 Exceed 2018MA）","manufacturer":"ExxonMobil（埃克森美孚）","polymer_type":"茂金属聚乙烯，乙烯-1-己烯共聚（C6 mLLDPE）","properties":{"mfr":{"value":2.0,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238"},"density":{"value":0.918,"unit":"g/cm³","method":"ASTM D792"},"melting_point":{"value":117,"unit":"°C","method":"ExxonMobil Method"},"vicat":{"value":106,"unit":"°C","method":"ExxonMobil Method"},"hdt":{"value":null},"film_note":"下列为 25.4 µm 吹膜数据（BUR 2.5:1），与 SP2320 的模塑样条数据不可直接对比。","tensile_strength_break_film_md_td":{"value":"60 / 60","unit":"MPa","method":"ASTM D882"},"tensile_elongation_break_film_md_td":{"value":"590 / 690","unit":"%","method":"ASTM D882"},"dart_drop":{"value":580,"unit":"g","method":"ASTM D1709A"}},"applications":["吹膜","复合膜","自立袋","冷冻膜","重包装袋","液体包装/箱中袋"],"sources":[{"title":"ExxonMobil Exceed m 2018.MA product datasheet (revision 2020-06-03)","url":"https://www.exxonmobilchemical.com/en/chemicals/webapi/dps/v1/datasheets/150000100995/0/en"}],"match_note":"聚合物类型、熔指和密度都非常接近（2.0 / 0.918 vs 2.0 / 0.920），用途高度重叠（吹膜、复合、自立袋、冷冻包装）。熔点/维卡也接近。是本批里与 SP2320 对得最齐的国际牌号。薄膜力学性能因测试形态不同，不能直接和 TDS 模塑数据比。"},{"grade":"Anteo FK1820","manufacturer":"Borouge / Borealis（博禄 / 北欧化工）","polymer_type":"Borstar 双峰三元共聚 LLDPE（非典型单峰茂金属，但是高性能吹膜密封层方向）","properties":{"mfr":{"value":1.5,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238"},"density":{"value":918,"unit":"kg/m³","method":"ASTM D792","note":"合 0.918 g/cm³"},"melting_point":{"value":122,"unit":"°C","method":"ISO 11357/03"},"vicat":{"value":102,"unit":"°C","method":"ASTM D1525"},"hdt":{"value":null},"film_note":"40 µm 吹膜（部分光学数据为掺 10% LDPE），与 SP2320 模塑数据不可直接对比。","tensile_strength_break_film_md_td":{"value":"52 / 50","unit":"MPa","method":"ISO 527-3"},"dart_drop":{"value":">1000","unit":"g","method":"ASTM D1709/A"}},"applications":["自立袋","冷冻食品包装","复合/层合","重包装袋","FFS","多层包装膜"],"sources":[{"title":"Borouge Anteo FK1820 Product Data Sheet (Jan 2018)","url":"https://www.borouge.com/en/e-service/DataSheets/Anteo%E2%84%A2%20FK1820/FK1820-IBD_MSDS-REG_EUROPE-EN-V1-ZPDS-EUR-53855-10042069.pdf"}],"match_note":"密度接近，用途几乎重合（自立袋、冷冻、复合膜）。熔指略低（1.5 vs 2.0），熔点略高。催化剂/分子结构是双峰三元共聚而非 Evolue 的茂金属己烯共聚，加工和热封窗口可能不同，需打样。"},{"grade":"KERNEL KF283","manufacturer":"Japan Polyethylene（日本聚乙烯）","polymer_type":"茂金属聚乙烯塑性体（KERNEL 薄膜牌号）","properties":{"mfr":{"value":2.5,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1872-2 / JIS K 6922-2"},"density":{"value":0.921,"unit":"g/cm³","method":"ISO 1872-1,2 / JIS K 7112"},"tensile_strength_yield":{"value":"No-Yield"},"tensile_elongation_break":{"value":">500","unit":"%"},"flexural_modulus":{"value":300,"unit":"MPa"},"charpy_impact":{"value":"No-Break","unit":"kJ/m²"},"shore_d":{"value":59,"method":"ISO 868"},"vicat":{"value":102,"unit":"°C","method":"ISO 306"},"hdt":{"value":null},"melting_point":{"value":108,"unit":"°C","method":"ISO 11357-3"}},"applications":["吹膜","耐蒸煮方向"],"sources":[{"title":"Japan Polyethylene KERNEL Metallocene Polyethylene properties (2022-10-16)","url":"https://www.j-polyethylene.com/en/cms/wp-content/uploads/2023/09/EN_properties_MetallocenePolyethyleneKN_20231016.pdf"}],"match_note":"密度几乎相同（0.921 vs 0.920），维卡接近（102 vs 101），同为吹膜；熔指略高，弯曲模量和硬度更高，但熔点明显更低（108 vs 115）。偏更刚、热封窗口可能不同。"},{"grade":"SUPEER 7318BE","manufacturer":"SABIC（沙特基础工业 / 沙比克）","polymer_type":"茂金属 C6 LLDPE","properties":{"mfr":{"value":3,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238","note":"原表单位为 dg/min，等同 g/10min。"},"density":{"value":918,"unit":"kg/m³","method":"ASTM D792","note":"合 0.918 g/cm³"},"melting_point":{"value":122,"unit":"°C","method":"ASTM D3418"},"vicat":{"value":103,"unit":"°C","method":"ISO 306","condition":"10 N, VST/A"},"hdt":{"value":null},"film_note":"下列为 25 µm 流延膜数据，与 SP2320 吹膜/模塑数据不可直接对比。"},"applications":["流延膜","拉伸缠绕膜","复合膜"],"sources":[{"title":"SABIC SUPEER mLLDPE 7318BE Global Technical Data Sheet (revision 20211214)","url":"https://a-ph.ru/wp-content/uploads/2022/01/SUPEER%E2%84%A2-mLLDPE_7318BE_Global_Technical_Data_Sheet.pdf"}],"match_note":"同为 C6 茂金属 LLDPE，密度接近；熔指更高（3 vs 2.0），且厂家定位主要是流延而非吹膜，加工方式与 SP2320 不完全同一赛道。可作相邻熔指的国际参照，不宜当作吹膜直接替换。"}],"gaps":"中石油独山子昆仑 mPE 1220F 在国内市场常被当作熔指约 2 的吹膜茂金属对照，用户资料索引中也有该牌号合格证条目（参考熔指 2、密度 0.914），但本轮未能拿到官方 TDS，故不把未核实数字写入对比表。"},{"grade":"SP0540","brand":"Evolue","manufacturer":"Prime Polymer Co., Ltd. / Prime Polymer Group（普瑞曼聚合物）","polymer_type":"茂金属线性低密度聚乙烯 mLLDPE（低密度，偏塑性体区间）","typical_applications":["流延薄膜","缠绕膜","复合膜 / 层合膜（公开资料亦列出）"],"features":["超低温热封","高抗冲","高抗针孔","低密度"],"properties":{"mfr":{"value":3.8,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133 / JIS K 7210"},"density":{"value":903,"unit":"kg/m³","method":"ISO 1183 / JIS K 7112","note":"合 0.903 g/cm³"},"melt_tension":{"value":6,"unit":"mN","condition":"190°C","method":"MCI（厂家方法）"},"tensile_strength_yield":{"value":null,"note":"系列总表未提供"},"tensile_strength_break":{"value":">16","unit":"MPa","method":"ISO 527-1,2 / JIS K 7161、7162"},"tensile_elongation_break":{"value":">500","unit":"%","method":"ISO 527-1,2 / JIS K 7161、7162"},"flexural_modulus":{"value":120,"unit":"MPa","method":"ISO 178 / JIS K 7171"},"charpy_impact":{"value":"NB","unit":"kJ/m²","method":"ISO 179-1 / JIS K 7111","note":"未断裂"},"izod_impact":{"value":null},"shore_d":{"value":49,"method":"ISO 868 / JIS K 7215","note":"系列总表未标明 A/D；同系列单页 TDS 按同一方法标为 Shore D"},"vicat":{"value":83,"unit":"°C","method":"ISO 306 / JIS K 7206"},"hdt":{"value":null,"note":"未提供"},"melting_point":{"value":98,"unit":"°C","method":"ISO 11357-3 / JIS K 7121"},"escr":{"value":">1000","unit":"h","method":"ASTM D1693"}},"sources":[{"title":"Evolue 系列介绍及总表第 4 页「流延薄膜」列（用户原件，主数据源；库内无单独 TDS）","path":"/workspace/datasheets/Evolue-系列介绍及总表.pdf"},{"title":"物性汇总.md（已逐格放大核对扫描件数字）","path":"/workspace/datasheets/物性汇总.md"},{"title":"Material Data Center Evolue SP0540（ISO 数据对照：MFR 3.8、密度 903、弯曲模量 120、断裂应力 16、Shore D 49、熔点 98）","url":"https://www.materialdatacenter.com/ms/en/Evolue/Prime+Polymer+Co%252E,+Ltd/Evolue%C2%AE+SP0540/69e0caec/1649"}],"competitors":[{"grade":"AFFINITY PL 1850G","manufacturer":"Dow（陶氏）","polymer_type":"聚烯烃塑性体 POP（INSITE 技术，乙烯-α-烯烃）","properties":{"mfr":{"value":3,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238"},"density":{"value":0.902,"unit":"g/cm³"},"melting_point":{"value":98,"unit":"°C","method":"DSC, Dow Method"},"vicat":{"value":85,"unit":"°C"},"hdt":{"value":null},"heat_seal_initiation":{"value":93.9,"unit":"°C"},"film_note":"下列为薄膜数据，与 SP0540 模塑/总表数据不可直接对比。","tensile_strength_break_film_md_td":{"value":"44.6 / 29.8","unit":"MPa","method":"ASTM D882"},"tensile_elongation_break_film_md_td":{"value":"350 / 570","unit":"%"}},"applications":["流延/吹膜热封层","食品软包装","可设计为全 PE 可回收结构"],"sources":[{"title":"Dow AFFINITY PL 1850G Polyolefin Plastomer product page","url":"https://www.dow.com/en-us/pdp.affinity-pl-1850g-polyolefin-plastomer.234065z.html"}],"match_note":"熔指、密度、熔点和维卡都非常接近（3.0 / 0.902 / 98°C / 85°C vs 3.8 / 0.903 / 98°C / 83°C），同为低温热封层方向。化学上是塑性体而非 Evolue 的 C6 mLLDPE，密封和光学可能更好、刚性可能略低，需打样。"},{"grade":"Queo 0203","manufacturer":"Borealis（北欧化工）","polymer_type":"茂金属乙烯-辛烯塑性体（C8 POP）","properties":{"mfr":{"value":3.0,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133-1"},"density":{"value":902,"unit":"kg/m³","method":"ISO 1183-1","note":"合 0.902 g/cm³"},"tensile_strength":{"value":31,"unit":"MPa","method":"ISO 527-2","note":"注塑样片，塑性体改性方法"},"tensile_elongation_break":{"value":820,"unit":"%","method":"ISO 527-2"},"flexural_modulus":{"value":72,"unit":"MPa","method":"ISO 178","note":"模塑样片"},"izod_impact":{"value":"No break","unit":"kJ/m²","method":"ISO 180","condition":"缺口, 23°C"},"shore_d":{"value":43,"method":"ISO 868"},"vicat":{"value":80,"unit":"°C","method":"ISO 306 A50","condition":"10 N"},"hdt":{"value":null},"melting_point":{"value":96,"unit":"°C","method":"ISO 11357-3"}},"applications":["层合及阻隔软包热封层","与其他聚烯烃共混","柔软发泡、电缆绝缘等"],"sources":[{"title":"Borealis Queo 0203 Product Data Sheet (2025-02-26, Ed.1)","url":"https://www.borealisgroup.com/storage/Datasheets/0203-PDS-REG_WORLD-EN-V1-PDS-WORLD-48809-PDS_QUEO-0203_1_26022025.pdf"}],"match_note":"熔指和密度接近，熔点/维卡略低。弯曲模量（72 vs 120）和 Shore D（43 vs 49）明显更软，是典型 C8 塑性体特征。热封和韧性可能更好，刚性不如 SP0540。"},{"grade":"KERNEL KF370","manufacturer":"Japan Polyethylene（日本聚乙烯）","polymer_type":"茂金属聚乙烯塑性体（KERNEL 薄膜牌号）","properties":{"mfr":{"value":3.5,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1872-2 / JIS K 6922-2"},"density":{"value":0.905,"unit":"g/cm³","method":"ISO 1872-1,2 / JIS K 7112"},"tensile_strength_yield":{"value":"No-Yield"},"tensile_elongation_break":{"value":">500","unit":"%"},"flexural_modulus":{"value":83,"unit":"MPa"},"charpy_impact":{"value":"No-Break","unit":"kJ/m²"},"shore_d":{"value":47,"method":"ISO 868"},"vicat":{"value":85,"unit":"°C","method":"ISO 306"},"hdt":{"value":null},"melting_point":{"value":97,"unit":"°C","method":"ISO 11357-3"}},"applications":["吹膜","低温热封"],"sources":[{"title":"Japan Polyethylene KERNEL Metallocene Polyethylene properties (2022-10-16)","url":"https://www.j-polyethylene.com/en/cms/wp-content/uploads/2023/09/EN_properties_MetallocenePolyethyleneKN_20231016.pdf"}],"match_note":"熔指、密度、维卡和熔点都很接近（3.5 / 0.905 / 85°C / 97°C）。弯曲模量低于 SP0540（83 vs 120），更偏塑性体手感。同系列 KF360T（3.5 / 0.898，维卡 72，熔点 90，弯曲模量 56）密度更低、更软，对超低温热封更近，对刚性则更远。"},{"grade":"EXACT 3027","manufacturer":"ExxonMobil（埃克森美孚）","polymer_type":"乙烯-丁烯塑性体（EXXPOL 催化，cast-film POP）","properties":{"mfr":{"value":3.5,"unit":"g/10min","method":"Exxon Method"},"density":{"value":0.9,"unit":"g/cm³","method":"Exxon Method"},"melting_point":{"value":90.0,"unit":"°C","method":"Exxon Method"},"vicat":{"value":null},"hdt":{"value":null},"film_note":"下列为薄膜数据（约 20.3 µm），与 SP0540 总表数据不可直接对比。","tensile_strength_break_film_md_td":{"value":"58.0 / 35.0","unit":"MPa","method":"ASTM D882"}},"applications":["流延单层/多层共挤","肉禽乳酪热封层","复合膜","重包装袋"],"sources":[{"title":"LookPolymers compilation of ExxonMobil EXACT 3027 manufacturer data","url":"https://www.lookpolymers.com/polymer_ExxonMobil-EXACT-3027-Plastomer-for-Cast-Film-Applications.php"}],"match_note":"熔指接近（3.5 vs 3.8），同为流延热封层；密度略低（0.900 vs 0.903），熔点明显更低（90 vs 98），且为丁烯共聚塑性体。热封温度可能更低，刚性/耐热可能不如 SP0540。本条来自第三方汇编的厂家数据，非 Exxon 官网当前 PDS 原文，引用时请再向厂家核对。"}],"gaps":"用户库内无 SP0540 单独 TDS，主数据来自系列总表扫描件；公开 Material Data Center 数值与之基本一致。"},{"grade":"M21E730","brand":null,"manufacturer":"INEOS Olefins & Polymers Europe（英力士）","polymer_type":"LDPE 离子聚合物（由乙烯-甲基丙烯酸 EMAA 共聚物中和得到，ionomer）","typical_applications":["易撕膜","集束收缩膜","信封袋","外包装膜","袋子","可与其他聚乙烯共混或共挤以调节性能"],"features":["很高的冲击强度","极好的拉伸减薄（drawdown）","纵向和横向撕裂扩展阻力都很低","光学性能较好"],"properties":{"mfr":{"value":0.5,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133-1"},"density":{"value":933,"unit":"kg/m³","method":"ISO 1183-1 & ISO 1872-1","note":"合 0.933 g/cm³"},"maa_content":{"value":1.7,"unit":"wt%","method":"INEOS method"},"vicat":{"value":92,"unit":"°C","method":"ISO 306 Method A"},"hdt":{"value":null,"note":"官方 TDS 未提供"},"melting_point":{"value":null,"note":"官方 TDS 未提供"},"film_note":"下列为 50 µm 吹膜（BUR 2.5:1，熔体温度 180°C）。","dart_drop":{"value":750,"unit":"g","method":"ASTM D1709 Method A"},"tensile_strength_yield_film_md_td":{"value":"11 / 10","unit":"MPa","method":"ISO 1184"},"tensile_strength_break_film_md_td":{"value":"28 / 29","unit":"MPa","method":"ISO 1184"},"tensile_elongation_break_film_md_td":{"value":"200 / 400","unit":"%","method":"ISO 1184"},"secant_modulus_1pct_md_td":{"value":"165 / 175","unit":"MPa","method":"ISO 1184"},"elmendorf_tear_md_td":{"value":"24 / 27","unit":"g/25 µm","method":"ASTM D1922","note":"撕裂扩展阻力极低，是该牌号的核心卖点。"},"haze":{"value":9,"unit":"%","method":"ASTM D1003"},"gloss_45":{"value":60,"unit":"‰","method":"ASTM D2457"}},"sources":[{"title":"INEOS M21E730 Product Technical Information（2014-08，官方 TDS，主数据源）","url":"https://www.ineos.com/show-document/?bu=INEOS+O+%2526+P+Europe&docLanguage=EN&documentType=Technical+Data+Sheet&grade=M21E730&version=c2d62c484d18b0d3b185c561f1459c00"}],"competitors":[{"grade":"HIMILAN 1706","manufacturer":"Dow-Mitsui Polychemicals（三井·杜邦聚合化学，现用 Dow 技术生产；与 SURLYN 同源）","polymer_type":"乙烯-甲基丙烯酸离子聚合物（Zn 型）","properties":{"mfr":{"value":0.9,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"JIS K 7210:1999"},"density":{"value":960,"unit":"kg/m³","method":"JIS K 7112:1999","note":"合 0.960 g/cm³"},"tensile_strength_break":{"value":33,"unit":"MPa","method":"JIS K 7161"},"tensile_elongation_break":{"value":300,"unit":"%","method":"JIS K 7161"},"flexural_rigidity":{"value":310,"unit":"MPa","method":"JIS K 7106:1995","note":"弯曲刚性，方法不同于弯曲模量 ISO 178。"},"shore_d":{"value":68,"method":"JIS K 7215:1986"},"vicat":{"value":65,"unit":"°C","method":"JIS K 7206:1999"},"hdt":{"value":null},"melting_point":{"value":91,"unit":"°C","method":"JIS K 7121:1987"},"maa_content":{"value":null,"note":"官方等级表未公布 MAA 含量"}},"applications":["薄膜","挤出涂覆","成型品","改性等（系列通用，非专门易撕膜）"],"sources":[{"title":"Dow-Mitsui Polychemicals HIMILAN product / grade chart","url":"https://www.mdp.jp/en/product/him.php"}],"match_note":"同为 EMAA 离子聚合物，熔指相对接近（0.9 vs 0.5）。但密度更高（0.960 vs 0.933），硬度/刚性高得多，维卡更低（65 vs 92）。官方未公布酸含量。定位是强韧、热封、耐磨，不是低撕裂扩展的易撕膜，不能当作对等替换。"},{"grade":"HIMILAN 1707 / SURLYN 1707 同系","manufacturer":"Dow-Mitsui Polychemicals（HIMILAN 1707）；Dow（SURLYN 系列同源）","polymer_type":"乙烯-甲基丙烯酸离子聚合物（Na 型）","properties":{"mfr":{"value":0.9,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"JIS K 7210:1999"},"density":{"value":940,"unit":"kg/m³","method":"JIS K 7112:1999"},"tensile_strength_break":{"value":33,"unit":"MPa"},"tensile_elongation_break":{"value":300,"unit":"%"},"flexural_rigidity":{"value":310,"unit":"MPa","method":"JIS K 7106:1995"},"shore_d":{"value":67,"method":"JIS K 7215:1986"},"vicat":{"value":60,"unit":"°C","method":"JIS K 7206:1999"},"hdt":{"value":null},"melting_point":{"value":90,"unit":"°C","method":"JIS K 7121:1987"}},"applications":["薄膜、涂覆、成型（系列通用）"],"sources":[{"title":"Dow-Mitsui Polychemicals HIMILAN grade chart","url":"https://www.mdp.jp/en/product/him.php"}],"match_note":"钠型离子聚合物，熔指 0.9，密度 0.940，仍明显高于 M21E730 的 0.933，且更硬、维卡更低。同属离子聚合物大类，用途侧重强韧热封而非易撕。"},{"grade":"SURLYN 1650（HIMILAN 1650 为对应日产品级，熔指/密度略有标注差异）","manufacturer":"Dow（陶氏）；日产对应为 Dow-Mitsui HIMILAN 1650","polymer_type":"乙烯酸共聚物离子聚合物（MAA；HIMILAN 1650 为 Zn 型）","properties":{"mfr_surlyn":{"value":1.8,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238","source_grade":"SURLYN 1650"},"density_surlyn":{"value":0.94,"unit":"g/cm³","source_grade":"SURLYN 1650"},"melting_point_surlyn":{"value":97,"unit":"°C","method":"ASTM D3417","source_grade":"SURLYN 1650"},"mfr_himilan":{"value":1.5,"unit":"g/10min","method":"JIS K 7210:1999","source_grade":"HIMILAN 1650"},"density_himilan":{"value":950,"unit":"kg/m³","source_grade":"HIMILAN 1650"},"vicat_himilan":{"value":74,"unit":"°C","method":"JIS K 7206:1999","source_grade":"HIMILAN 1650"},"hdt":{"value":null},"maa_content":{"value":null,"note":"Dow 产品页只标明共聚单体为 MAA，未给含量。"}},"applications":["吹膜/流延膜","热封层","皮肤包装","肉类海鲜与液体包装"],"sources":[{"title":"Dow SURLYN 1650 Ionomer product page","url":"https://www.dow.com/en-us/pdp.surlyn-1650-ionomer.1892280z.html"},{"title":"Dow-Mitsui HIMILAN grade chart（1650）","url":"https://www.mdp.jp/en/product/him.php"}],"match_note":"同为薄膜用 MAA 离子聚合物，但熔指更高、密度更高，官方定位是高热粘、低温热封、耐油和强韧，与 M21E730「双向极易撕」几乎相反。仅能作为同一材料家族的对照，不是易撕膜对等牌号。"},{"grade":"SURLYN 1652（HIMILAN 1652：Zn，MFR 5.5，密度 940）","manufacturer":"Dow（陶氏）；日产对应 HIMILAN 1652","polymer_type":"乙烯酸共聚物离子聚合物（MAA，Zn 型）","properties":{"mfr_surlyn":{"value":5.2,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238"},"density_surlyn":{"value":0.94,"unit":"g/cm³"},"melting_point_surlyn":{"value":100,"unit":"°C","method":"ASTM D3417"},"mfr_himilan":{"value":5.5,"unit":"g/10min","method":"JIS K 7210:1999"},"density_himilan":{"value":940,"unit":"kg/m³"},"vicat_himilan":{"value":80,"unit":"°C","method":"JIS K 7206:1999"},"shore_d_himilan":{"value":58,"method":"JIS K 7215:1986"},"hdt":{"value":null},"maa_content":{"value":null}},"applications":["挤出涂覆","吹膜/流延","热封","一般食品包装","铝箔粘接（Dow 页标注 Foil Adhesion）"],"sources":[{"title":"Dow SURLYN 1652 Ionomer product page","url":"https://www.dow.com/ja-jp/pdp.surlyn-1652-ionomer.1892286z.html"},{"title":"Dow-Mitsui HIMILAN grade chart（1652）","url":"https://www.mdp.jp/en/product/him.php"}],"match_note":"同家族离子聚合物，可做薄膜和涂覆，维卡相对接近（80 vs 92），但熔指高一个数量级（约 5 vs 0.5），不是低熔指易撕膜的对等牌号。更接近高流动热封/涂覆离子聚合物。"}],"gaps":"公开资料中未找到 MAA 含量约 1.7%、熔指约 0.5、且明确以「双向低撕裂扩展 / 易撕膜」定位的对等牌号。SURLYN / HIMILAN 是最接近的材料家族，但酸含量（未公布，从密度 0.94–0.96 推断通常明显高于 1.7%）和用途（强韧热封而非易撕）差距明显。INEOS 同系列的 M29N430 等是未中和 EMAA 挤出复合料，不能当作本牌号竞品。"},{"grade":"BF-7M","brand":"IGETABOND","manufacturer":"住友化学（机能树脂事业部）","polymer_type":"E-GMA-MA 三元共聚物（乙烯-甲基丙烯酸缩水甘油酯-丙烯酸甲酯）","typical_applications":["汽车部件","电器电子部件","建材部件","电线电缆","PET 回收料改性","薄膜等（表中各牌号共用）"],"features":["柔软性","高低温抗冲击性"],"properties":{"gma_content":{"value":6,"unit":"wt%","method":"住化法"},"va_content":{"value":null,"note":"原表为 —"},"ma_content":{"value":27,"unit":"wt%","method":"住化法"},"mfr":{"value":7,"unit":"g/10min","condition":"190°C, 21.2 N（约 2.16 kg）","method":"JIS K 7210"},"density":{"value":960,"unit":"kg/m³","method":"JIS K 7112","note":"合 0.960 g/cm³"},"tensile_strength_break":{"value":3,"unit":"MPa","method":"ASTM D638","note":"IV 型试样，拉伸速率 200 mm/min"},"tensile_elongation_break":{"value":1000,"unit":"%","method":"ASTM D638"},"flexural_modulus":{"value":4,"unit":"MPa","method":"ASTM D747"},"charpy_impact":{"value":null,"note":"未提供"},"izod_impact":{"value":null},"shore_d":{"value":13,"method":"JIS K 7215"},"vicat":{"value":"\u003c25","unit":"°C","method":"JIS K 7206"},"hdt":{"value":null,"note":"未提供"},"brittleness_temperature":{"value":"\u003c-70","unit":"°C","method":"JIS K 7216"},"melting_point":{"value":52,"unit":"°C","method":"住化法（DSC）"},"tg":{"value":-33,"unit":"°C","method":"住化法（DSC）"},"water_absorption":{"value":"\u003c0.05","unit":"%","method":"JIS K 6911"}},"sources":[{"title":"住友 IGETABOND BF-7M 和 BF-E 物性表（中文，2016.8 / 表内 2014年2月，主数据源）","path":"/workspace/datasheets/住友-IGETABOND-BF7M和BFE-物性表(中文).pdf"},{"title":"住友极性树脂系列总表（相同表格）","path":"/workspace/datasheets/住友-极性树脂系列总表.pdf"},{"title":"住友 EMMA 和 EGMA 物性资料第 2 页（相同表格）","path":"/workspace/datasheets/住友-EMMA和EGMA-物性资料(中文).pdf"},{"title":"物性汇总.md","path":"/workspace/datasheets/物性汇总.md"}],"competitors":[{"grade":"LOTADER AX8900","manufacturer":"SK Functional Polymer（原 Arkema LOTADER 产品线）","polymer_type":"无规 E-MA-GMA 三元共聚物（乙烯-丙烯酸甲酯-甲基丙烯酸缩水甘油酯）","properties":{"mfr":{"value":6,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133"},"density":{"value":0.95,"unit":"g/cm³","method":"ISO 1183 / ASTM D792"},"ma_content":{"value":24,"unit":"wt%","method":"FTIR（内部方法）"},"gma_content":{"value":8,"unit":"wt%","method":"FTIR（内部方法）"},"melting_point":{"value":65,"unit":"°C","method":"ISO 11357"},"vicat":{"value":"\u003c40","unit":"°C","method":"ISO 306","condition":"10 N，压缩成型样片"},"hdt":{"value":null},"tensile_strength_break":{"value":4,"unit":"MPa","method":"ISO 527 / ASTM D638"},"tensile_elongation_break":{"value":1100,"unit":"%","method":"ISO 527 / ASTM D638"},"flexural_modulus":{"value":"\u003c30","unit":"MPa","method":"ISO 178 / ASTM D790"}},"applications":["工程塑料（PPS、PBT、PET 及 PC 合金）增韧","聚酯/聚烯烃相容","沥青改性","金属表面粘接促进"],"sources":[{"title":"SK Functional Polymer LOTADER AX8900 Technical Data Sheet (revision July 2026)","url":"https://sk-fp.com/wp-content/uploads/SKFP_TDS_Lotader-AX8900_v0726.pdf"}],"match_note":"化学结构最接近的经典对标：同为 E-MA-GMA 三元共聚。熔指接近（6 vs 7），MA 含量接近（24% vs 27%），GMA 略高（8% vs 6%），密度略低（0.95 vs 0.96）。都非常软（维卡均很低，拉伸强度 3–4 MPa，伸长率约 1000%）。熔点略高（65 vs 52）。增韧/相容用途高度重叠，是 BF-7M 最常用的国际对照牌号。"},{"grade":"LOTADER AX8700","manufacturer":"SK Functional Polymer","polymer_type":"无规 E-BA-GMA 三元共聚物（乙烯-丙烯酸丁酯-GMA，丙烯酸酯种类与 BF-7M 不同）","properties":{"mfr":{"value":8,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133 / ASTM D1238"},"density":{"value":0.94,"unit":"g/cm³","method":"ISO 1183 / ASTM D792"},"ba_content":{"value":25,"unit":"wt%","method":"FTIR（内部方法）"},"gma_content":{"value":8,"unit":"wt%","method":"FTIR（内部方法）"},"melting_point":{"value":71,"unit":"°C","method":"ISO 11357-3 / ASTM D3418"},"vicat":{"value":"\u003c40","unit":"°C","method":"ISO 306 / ASTM D1525"},"hdt":{"value":null},"flexural_modulus":{"value":"\u003c30","unit":"MPa","method":"ISO 178 / ASTM D790"}},"applications":["工程塑料增韧","聚酯/聚烯烃相容","沥青改性","金属粘接促进"],"sources":[{"title":"SK Functional Polymer LOTADER AX8700 Technical Data Sheet (September 2024)","url":"https://sk-fp.com/wp-content/uploads/SK-TDS-LOTADER-AX8700-v09.2024.pdf"}],"match_note":"同为高丙烯酸酯含量的 E-丙烯酸酯-GMA 软质三元共聚，GMA 8%、熔指 8，柔软度和用途接近。但丙烯酸酯是 BA 而非 MA，熔点更高（71 vs 52），密度略低。可作为相近功能的替代路线，不是同一共聚组成。"},{"grade":"LOTADER AX8750","manufacturer":"SK Functional Polymer","polymer_type":"无规 E-BA-GMA 三元共聚物","properties":{"mfr":{"value":12,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133"},"density":{"value":0.94,"unit":"g/cm³","method":"ISO 1183 / ASTM D792"},"ba_content":{"value":24,"unit":"wt%","method":"FTIR（内部方法）"},"gma_content":{"value":5,"unit":"wt%","method":"FTIR（内部方法）"},"melting_point":{"value":74,"unit":"°C","method":"ISO 11357"},"vicat":{"value":"\u003c40","unit":"°C","method":"ISO 306"},"hdt":{"value":null},"flexural_modulus":{"value":"\u003c30","unit":"MPa","method":"ISO 178"}},"applications":["工程塑料及 PC 合金增韧","聚酯/聚烯烃相容","沥青改性","金属粘接促进"],"sources":[{"title":"SK Functional Polymer LOTADER AX8750 Technical Data Sheet (revision April 2026)","url":"https://sk-fp.com/wp-content/uploads/SKFP_TDS_Lotader-AX8750_v0426.pdf"}],"match_note":"GMA 含量接近（5% vs 6%），同样很软（维卡 \u003c40，弯曲模量 \u003c30），但熔指更高（12 vs 7），且为 BA 而非 MA。流动性更大，反应性可能略低。"},{"grade":"ELVALOY PTW","manufacturer":"Dow（陶氏；原杜邦 Elvaloy）","polymer_type":"反应性乙烯三元共聚物（官方标明丙烯酸酯共聚单体 28%；用于聚酯增韧/相容。官方页未公布 GMA 含量，此处不推测）","properties":{"mfr":{"value":12,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238 / ISO 1133"},"density":{"value":0.94,"unit":"g/cm³","method":"ASTM D792 / ISO 1183"},"acrylate_content":{"value":28,"unit":"%","note":"Dow 产品页写 28% Acrylate，未区分 MA/BA。"},"gma_content":{"value":null,"note":"官方产品页与 2016 年 DuPont TDS 均未给出 GMA 含量，不予填写。"},"melting_point":{"value":72,"unit":"°C","method":"ASTM D3417 / ISO 3146"},"vicat":{"value":null},"hdt":{"value":null}},"applications":["多种聚合物的通用增韧剂","PET（含 CPET 托盘、回收聚酯）增韧并提高熔体强度","聚酯相容剂"],"sources":[{"title":"Dow ELVALOY PTW Copolymer product page","url":"https://www.dow.com/en-us/pdp.elvaloy-ptw-copolymer.1891889z.html"},{"title":"DuPont Elvaloy PTW Product Data Sheet (version 4.0, last modified 2016-11-09)","url":"https://www.cheminno.co.th/wp-content/uploads/2018/file/Dupont/ELVALOY/TDS-Elvaloy-PTW.pdf"}],"match_note":"同为高丙烯酸酯含量的反应性乙烯三元共聚物，密度接近，广泛用于 PET/PBT 增韧，是 IGETABOND 在聚酯改性领域的另一主要国际对照。熔指更高（12 vs 7），熔点更高（72 vs 52）。官方未公布 GMA%，无法判断反应性是否与 6% GMA 相当，必须打样。"}],"gaps":"真正同结构的随机 E-GMA-丙烯酸酯共聚物，国际上主要就是 LOTADER 和 ELVALOY 两条线。国内常见的是 GMA 接枝 POE（如佳易容 SOG 系列等），化学结构是接枝弹性体而非高压法随机共聚物，薄膜粘接/相容行为可能不同，本表不将其列为对等牌号。住友同系列 BF-7L（GMA 3%、MA 27%、熔指 7）是姊妹牌号，不是竞品。"},{"grade":"BF-E","brand":"IGETABOND","manufacturer":"住友化学（机能树脂事业部）","polymer_type":"E-GMA 二元共聚物（乙烯-甲基丙烯酸缩水甘油酯）","typical_applications":["汽车部件","电器电子部件","建材部件","电线电缆","PET 回收料改性","薄膜等（表中各牌号共用）"],"features":["高反应性"],"properties":{"gma_content":{"value":12,"unit":"wt%","method":"住化法"},"va_content":{"value":null,"note":"原表为 —"},"ma_content":{"value":null,"note":"原表为 —（二元共聚，不含 MA）"},"mfr":{"value":3,"unit":"g/10min","condition":"190°C, 21.2 N（约 2.16 kg）","method":"JIS K 7210"},"density":{"value":940,"unit":"kg/m³","method":"JIS K 7112","note":"合 0.940 g/cm³"},"tensile_strength_break":{"value":19,"unit":"MPa","method":"ASTM D638","note":"IV 型试样，拉伸速率 200 mm/min"},"tensile_elongation_break":{"value":700,"unit":"%","method":"ASTM D638"},"flexural_modulus":{"value":69,"unit":"MPa","method":"ASTM D747"},"charpy_impact":{"value":null,"note":"未提供"},"izod_impact":{"value":null},"shore_d":{"value":43,"method":"JIS K 7215"},"vicat":{"value":75,"unit":"°C","method":"JIS K 7206"},"hdt":{"value":null,"note":"未提供"},"brittleness_temperature":{"value":"\u003c-70","unit":"°C","method":"JIS K 7216"},"melting_point":{"value":103,"unit":"°C","method":"住化法（DSC）"},"tg":{"value":-26,"unit":"°C","method":"住化法（DSC）"},"water_absorption":{"value":"\u003c0.01","unit":"%","method":"JIS K 6911"}},"sources":[{"title":"住友 IGETABOND BF-7M 和 BF-E 物性表（中文，主数据源）","path":"/workspace/datasheets/住友-IGETABOND-BF7M和BFE-物性表(中文).pdf"},{"title":"住友极性树脂系列总表","path":"/workspace/datasheets/住友-极性树脂系列总表.pdf"},{"title":"住友 EMMA 和 EGMA 物性资料第 2 页","path":"/workspace/datasheets/住友-EMMA和EGMA-物性资料(中文).pdf"},{"title":"物性汇总.md","path":"/workspace/datasheets/物性汇总.md"}],"competitors":[{"grade":"LOTADER AX8840","manufacturer":"SK Functional Polymer（原 Arkema LOTADER）","polymer_type":"无规 E-GMA 二元共聚物","properties":{"mfr":{"value":5,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133"},"density":{"value":0.94,"unit":"g/cm³","method":"ISO 1183 / ASTM D792"},"gma_content":{"value":8,"unit":"wt%","method":"FTIR（内部方法）"},"melting_point":{"value":104,"unit":"°C","method":"ISO 11357"},"vicat":{"value":87,"unit":"°C","method":"ISO 306","condition":"10 N，压缩成型样片"},"hdt":{"value":null},"flexural_modulus":{"value":85,"unit":"MPa","method":"ISO 178"},"tensile_strength_break":{"value":null}},"applications":["聚酯/聚烯烃相容","沥青改性","层合粘接（聚烯烃/聚酯、聚烯烃/PPS 等）","对 PET、PBT、PPS、金属、纸、玻璃有粘接"],"sources":[{"title":"SK Functional Polymer LOTADER AX8840 Technical Data Sheet (revision April 2026)","url":"https://sk-fp.com/wp-content/uploads/SKFP_TDS_Lotader-AX8840_v0426.pdf"}],"match_note":"同为不含丙烯酸酯的 E-GMA 二元共聚，密度相同（0.94），熔点几乎相同（104 vs 103）。GMA 含量更低（8% vs 12%），熔指略高（5 vs 3），维卡和弯曲模量更高（87°C / 85 MPa vs 75°C / 69 MPa）。是 BF-E 最常用的国际对照，但反应性（GMA%）明显偏低，粘接或增韧效率可能不同。"},{"grade":"LOTADER AX8850","manufacturer":"SK Functional Polymer","polymer_type":"无规 E-GMA 二元共聚物（高流动）","properties":{"mfr":{"value":40,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133"},"density":{"value":0.94,"unit":"g/cm³","method":"ISO 1183 / ASTM D792"},"gma_content":{"value":12,"unit":"wt%","method":"FTIR（内部方法）"},"melting_point":{"value":98,"unit":"°C","method":"ISO 11357"},"vicat":{"value":64,"unit":"°C","method":"ISO 306","condition":"10 N"},"hdt":{"value":null},"tensile_strength_break":{"value":7.9,"unit":"MPa","method":"ISO 527 / ASTM D638"},"tensile_elongation_break":{"value":600,"unit":"%"},"flexural_modulus":{"value":77,"unit":"MPa","method":"ISO 178"},"shore_d":{"value":38,"method":"ISO 868 / ASTM D2240","note":"15 s；同时给 Shore A 93"}},"applications":["注塑用高流动相容/增韧","PET/PE、PBT/PE 机械回收相容","与聚烯烃共混作粘接促进"],"sources":[{"title":"SK Functional Polymer LOTADER AX8850 Technical Data Sheet (revision April 2026)","url":"https://sk-fp.com/wp-content/uploads/SKFP_TDS_Lotader-AX8850_v0426.pdf"}],"match_note":"GMA 含量与 BF-E 相同（12%），密度相同，同为 E-GMA 二元共聚。但熔指高达 40（vs 3），是为注塑高流动设计的，不能在挤出/薄膜/低流动改性场景直接替换。适合只看重反应性、且需要很高流动性的配方。"},{"grade":"LOTADER AX8900","manufacturer":"SK Functional Polymer","polymer_type":"E-MA-GMA 三元共聚物（比 BF-E 多了丙烯酸甲酯，更软）","properties":{"mfr":{"value":6,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ISO 1133"},"density":{"value":0.95,"unit":"g/cm³"},"ma_content":{"value":24,"unit":"wt%"},"gma_content":{"value":8,"unit":"wt%"},"melting_point":{"value":65,"unit":"°C"},"vicat":{"value":"\u003c40","unit":"°C"},"hdt":{"value":null},"flexural_modulus":{"value":"\u003c30","unit":"MPa"}},"applications":["工程塑料增韧","聚酯/聚烯烃相容"],"sources":[{"title":"SK Functional Polymer LOTADER AX8900 Technical Data Sheet (revision July 2026)","url":"https://sk-fp.com/wp-content/uploads/SKFP_TDS_Lotader-AX8900_v0726.pdf"}],"match_note":"GMA 有反应性，但结构是软质三元共聚，维卡和熔点远低于 BF-E（\u003c40 / 65 vs 75 / 103），更接近 BF-7M 而不是 BF-E。若客户要的是 BF-E 的刚性和耐热，AX8900 偏软，不是同功能替换。"},{"grade":"ELVALOY PTW","manufacturer":"Dow（陶氏）","polymer_type":"反应性乙烯三元共聚物（官方 28% 丙烯酸酯；未公布 GMA%）","properties":{"mfr":{"value":12,"unit":"g/10min","condition":"190°C, 2.16 kg","method":"ASTM D1238"},"density":{"value":0.94,"unit":"g/cm³"},"acrylate_content":{"value":28,"unit":"%"},"gma_content":{"value":null},"melting_point":{"value":72,"unit":"°C","method":"ASTM D3417"},"vicat":{"value":null},"hdt":{"value":null}},"applications":["聚酯等工程塑料增韧与相容","CPET / 回收 PET"],"sources":[{"title":"Dow ELVALOY PTW Copolymer product page","url":"https://www.dow.com/en-us/pdp.elvaloy-ptw-copolymer.1891889z.html"}],"match_note":"密度相同，同用于 PET 增韧，但是三元共聚、更软（熔点 72 vs 103），熔指更高。更接近 BF-7M 赛道。若要对标 BF-E 的高 GMA 二元共聚刚性，优先看 AX8840 而不是 PTW。"}],"gaps":"公开资料中未找到 GMA 约 12%、熔指约 3 的其他 E-GMA 二元共聚官方牌号。AX8850 的 GMA 对得上但熔指差一个数量级。国产 GMA 接枝 POE 未列为对等牌号（结构不同）。住友同系列 BF-2C（GMA 6%、熔指 3、密度 930）是低 GMA 姊妹牌号，不是竞品。"}]}</script>
+  <script>
+
+(function () {
+  "use strict";
+
+  const RAW = JSON.parse(document.getElementById("payload").textContent);
+  const GRADES = RAW.grades;
+  const DISCLAIMER = RAW.disclaimer ||
+    "全部数值均来自注明来源的公开物性表，均为典型/代表值、非保证规格。未找到的项目记为 —，不推测、不编造。";
+
+  const CAT = {
+    mpe: { label: "茂金属 PE", bg: "#e7f1f1", ink: "#1a4548", bar: "#2a6a6e" },
+    ionomer: { label: "离子聚合物", bg: "#e8eef6", ink: "#1e3f63", bar: "#1e3f63" },
+    compat: { label: "相容剂增韧剂", bg: "#f8eee6", ink: "#8a4a1f", bar: "#b85e28" }
+  };
+
+  const META = {
+    SP1071C: {
+      category: "mpe",
+      line: "挤出涂覆用茂金属 LLDPE，高速涂覆、低颈缩",
+      tags: ["挤出涂覆", "高速涂覆", "低颈缩"],
+      makerShort: "普瑞曼 · Evolue",
+      headlines: ["mfr", "density", "vicat"],
+      chartKeys: ["mfr", "density", "vicat"],
+      aliases: ["evolue", "挤出涂覆", "涂覆", "sp1071", "普瑞曼", "三井", "prime polymer", "mll dpe", "mlldpe"]
+    },
+    SP2320: {
+      category: "mpe",
+      line: "吹膜用茂金属 LLDPE，高韧性、高透明",
+      tags: ["吹膜", "高韧性", "高透明"],
+      makerShort: "普瑞曼 · Evolue",
+      headlines: ["mfr", "density", "vicat"],
+      chartKeys: ["mfr", "density", "vicat"],
+      aliases: ["evolue", "吹膜", "sp2320", "普瑞曼", "三井", "prime polymer", "自立袋", "冷冻"]
+    },
+    SP0540: {
+      category: "mpe",
+      line: "流延与拉伸膜用茂金属 LLDPE，高速加工、高热粘",
+      tags: ["流延膜", "拉伸膜", "高热粘"],
+      makerShort: "普瑞曼 · Evolue",
+      headlines: ["mfr", "density", "melting_point"],
+      chartKeys: ["mfr", "density", "melting_point"],
+      aliases: ["evolue", "流延", "拉伸", "sp0540", "普瑞曼", "三井", "prime polymer", "热粘"]
+    },
+    M21E730: {
+      category: "ionomer",
+      line: "EMAA 离子聚合物，低熔指，易撕膜专用",
+      tags: ["离子聚合物", "低熔指", "易撕膜"],
+      makerShort: "INEOS",
+      headlines: ["mfr", "density", "maa_content"],
+      chartKeys: ["mfr", "density"],
+      aliases: ["ineos", "离子聚合物", "离子", "m21e730", "escr", "埃斯卡", "钠盐"],
+      familyNote: "目前没有找到可直接对标的钠盐离子聚合物竞品。下表中的杜邦 Surlyn / 三井 Himilan 仅作材料家族参照，熔指或酸含量差异较大，不能按同牌号直接替换。"
+    },
+    "BF-7M": {
+      category: "compat",
+      line: "乙烯-GMA-丙烯酸甲酯三元共聚物，相容剂与增韧剂",
+      tags: ["相容剂", "增韧剂", "E-GMA-MA"],
+      makerShort: "住友化学 · IGETABOND",
+      headlines: ["mfr", "density", "gma_content"],
+      chartKeys: ["mfr", "density", "gma_content"],
+      aliases: ["igetabond", "住友", "bf7m", "bf-7m", "相容剂", "增韧", "三元", "egma"]
+    },
+    "BF-E": {
+      category: "compat",
+      line: "乙烯-GMA 二元共聚物，工程塑料相容剂",
+      tags: ["相容剂", "E-GMA", "工程塑料"],
+      makerShort: "住友化学 · IGETABOND",
+      headlines: ["mfr", "density", "gma_content"],
+      chartKeys: ["mfr", "density", "gma_content"],
+      aliases: ["igetabond", "住友", "bfe", "bf-e", "相容剂", "二元", "egma"]
+    }
+  };
+
+  const MATCH = {
+    "SP1071C|KERNEL KC570S": "最接近",
+    "SP1071C|KERNEL KC577T": "可替代",
+    "SP1071C|ELITE 5811": "可替代",
+    "SP1071C|ELITE 5815": "仅参照",
+    "SP1071C|ELTEX PF1315AZ": "仅参照",
+    "SP2320|Exceed m 2018.MA（曾用名 Exceed 2018MA）": "最接近",
+    "SP2320|Anteo FK1820": "可替代",
+    "SP2320|KERNEL KF283": "可替代",
+    "SP2320|SUPEER 7318BE": "仅参照",
+    "SP0540|AFFINITY PL 1850G": "最接近",
+    "SP0540|Queo 0203": "可替代",
+    "SP0540|KERNEL KF370": "可替代",
+    "SP0540|EXACT 3027": "仅参照",
+    "M21E730|HIMILAN 1706": "不能直接替换",
+    "M21E730|HIMILAN 1707 / SURLYN 1707 同系": "不能直接替换",
+    "M21E730|SURLYN 1650（HIMILAN 1650 为对应日产品级，熔指/密度略有标注差异）": "不能直接替换",
+    "M21E730|SURLYN 1652（HIMILAN 1652：Zn，MFR 5.5，密度 940）": "不能直接替换",
+    "BF-7M|LOTADER AX8900": "最接近",
+    "BF-7M|LOTADER AX8700": "可替代",
+    "BF-7M|LOTADER AX8750": "可替代",
+    "BF-7M|ELVALOY PTW": "仅参照",
+    "BF-E|LOTADER AX8840": "最接近",
+    "BF-E|LOTADER AX8850": "不能直接替换",
+    "BF-E|LOTADER AX8900": "仅参照",
+    "BF-E|ELVALOY PTW": "仅参照"
+  };
+
+  const PROP_LABEL = {
+    mfr: "熔体流动速率",
+    density: "密度",
+    tensile_break: "拉伸断裂强度",
+    elongation_break: "断裂伸长率",
+    tensile_yield: "拉伸屈服强度",
+    flexural_modulus: "弯曲模量",
+    flexural_strength: "弯曲强度",
+    impact_izod: "悬臂梁冲击",
+    impact_charpy: "简支梁冲击",
+    impact_dart: "落镖冲击",
+    tear_md: "撕裂强度 MD",
+    tear_td: "撕裂强度 TD",
+    haze: "雾度",
+    gloss: "光泽度",
+    hardness_shore_d: "邵氏硬度 D",
+    hdt: "热变形温度",
+    vicat: "维卡软化点",
+    melting_point: "熔点",
+    escr: "耐应力开裂",
+    maa_content: "甲基丙烯酸含量",
+    gma_content: "GMA 含量",
+    ma_content: "丙烯酸甲酯含量",
+    elastic_modulus: "弹性模量",
+    tensile_modulus: "拉伸模量",
+    neck_in: "颈缩",
+    puncture: "穿刺强度",
+    stiffness: "刚度",
+    softening_point: "软化点",
+    melting_peak: "熔融峰",
+    glass_transition: "玻璃化转变",
+    water_absorption: "吸水率",
+    volume_resistivity: "体积电阻率",
+    dielectric_constant: "介电常数",
+    peel_strength: "剥离强度",
+    adhesion: "粘接力",
+    heat_seal: "热封强度",
+    hot_tack: "热粘",
+    crystallinity: "结晶度",
+    acrylate_content: "丙烯酸酯含量",
+    ba_content: "丙烯酸丁酯含量",
+    brittleness_temperature: "脆化温度",
+    charpy_impact: "简支梁冲击",
+    dart_drop: "落镖冲击",
+    density_himilan: "密度（Himilan）",
+    density_surlyn: "密度（Surlyn）",
+    elmendorf_tear_md_td: "撕裂强度 MD/TD",
+    flexural_rigidity: "弯曲刚度",
+    gloss_45: "光泽度 45°",
+    heat_seal_initiation: "起始热封温度",
+    izod_impact: "悬臂梁冲击",
+    melt_tension: "熔体张力",
+    melting_point_surlyn: "熔点（Surlyn）",
+    mfr_himilan: "熔指（Himilan）",
+    mfr_surlyn: "熔指（Surlyn）",
+    secant_modulus_1pct_md_td: "1% 割线模量 MD/TD",
+    shore_d: "邵氏硬度 D",
+    shore_d_himilan: "邵氏硬度 D（Himilan）",
+    tensile_elongation_break: "断裂伸长率",
+    tensile_elongation_break_film_md_td: "薄膜断裂伸长率 MD/TD",
+    tensile_strength: "拉伸强度",
+    tensile_strength_break: "拉伸断裂强度",
+    tensile_strength_break_film_md_td: "薄膜拉伸断裂强度 MD/TD",
+    tensile_strength_yield: "拉伸屈服强度",
+    tensile_strength_yield_film_md_td: "薄膜拉伸屈服强度 MD/TD",
+    tg: "玻璃化转变温度",
+    va_content: "醋酸乙烯含量",
+    vicat_himilan: "维卡软化点（Himilan）"
+  };
+
+  const CHART_LABEL = {
+    mfr: "熔指",
+    density: "密度",
+    vicat: "维卡",
+    melting_point: "熔点",
+    gma_content: "GMA",
+    maa_content: "MAA"
+  };
+
+  const BADGE_CLASS = {
+    "最接近": "badge-closest",
+    "可替代": "badge-alt",
+    "仅参照": "badge-ref",
+    "不能直接替换": "badge-no"
+  };
+
+  const LS_KEY = "wb-plastics-quote-v1";
+  const byId = Object.fromEntries(GRADES.map(function (g) { return [g.grade, g]; }));
+
+  const state = {
+    category: "all",
+    query: "",
+    vs: "",
+    chartKey: "",
+    jumpedFrom: "",
+    searchOpen: false,
+    searchHits: [],
+    activeHit: 0
+  };
+
+  const $navSearch = document.getElementById("search");
+  const $searchPop = document.getElementById("search-pop");
+  const $main = document.getElementById("main");
+  const $toast = document.getElementById("toast");
+  const $filters = document.getElementById("filters");
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function metaOf(id) { return META[id] || {}; }
+  function catOf(id) { return CAT[metaOf(id).category] || CAT.mpe; }
+  function matchOf(ours, theirs) {
+    const exact = MATCH[ours + "|" + theirs];
+    if (exact) return exact;
+    const prefix = ours + "|";
+    for (const k in MATCH) {
+      if (k.indexOf(prefix) !== 0) continue;
+      const name = k.slice(prefix.length);
+      if (theirs === name || theirs.indexOf(name) === 0 || name.indexOf(theirs) === 0) return MATCH[k];
+    }
+    return "";
+  }
+
+  function prettyUnit(u) {
+    if (!u) return "";
+    return String(u)
+      .replace(/g\/10\s*min/ig, "g/10 min")
+      .replace(/kg\/m[³3]/g, "kg/m³")
+      .replace(/kJ\/m[²2]/g, "kJ/m²")
+      .replace(/g\/cm[³3]/g, "g/cm³");
+  }
+
+  function prettyText(val) {
+    const t = String(val).trim();
+    const lower = t.toLowerCase();
+    if (t === "NB" || lower === "no-break" || lower === "no break" || lower === "nobreak") {
+      return { text: "未破", dropUnit: true };
+    }
+    if (lower === "no-yield" || lower === "no yield" || lower === "noyield") {
+      return { text: "无屈服", dropUnit: true };
+    }
+    return { text: t, dropUnit: false };
+  }
+
+  function isPresent(p) {
+    if (p == null) return false;
+    if (typeof p === "string") return p.trim() !== "";
+    if (typeof p !== "object") return p !== "" && p != null;
+    if (p.value == null || p.value === "") return false;
+    if (typeof p.value === "string" && /^[—–\-]$/.test(p.value.trim())) return false;
+    return true;
+  }
+
+  function propOf(obj, key) {
+    const props = obj && obj.properties ? obj.properties : null;
+    if (!props) return null;
+    return props[key] || null;
+  }
+
+  function displayValue(p) {
+    if (!isPresent(p)) return { text: "—", unit: "", method: "", note: "", missing: true };
+    if (typeof p === "string") {
+      const pt = prettyText(p);
+      return { text: pt.text, unit: "", method: "", note: "", missing: false };
+    }
+    const pt = prettyText(p.value);
+    const unit = pt.dropUnit ? "" : prettyUnit(p.unit || "");
+    const methodParts = [];
+    if (p.condition) methodParts.push(p.condition);
+    if (p.method) methodParts.push(p.method);
+    return {
+      text: pt.text,
+      unit: unit,
+      method: methodParts.join(" · "),
+      note: p.note || "",
+      missing: false
+    };
+  }
+
+  function numericOf(p) {
+    if (!isPresent(p)) return null;
+    if (typeof p === "number") return p;
+    const raw = typeof p === "object" ? p.value : p;
+    if (typeof raw === "number" && isFinite(raw)) return raw;
+    const s = String(raw).trim();
+    const m = s.match(/-?\d+(\.\d+)?/);
+    if (!m) return null;
+    const n = parseFloat(m[0]);
+    return isFinite(n) ? n : null;
+  }
+
+  function densityNorm(p) {
+    if (!isPresent(p)) return { n: null, label: null, unit: "g/cm³" };
+    const d = displayValue(p);
+    let n = numericOf(p);
+    let unit = (typeof p === "object" && p.unit) ? p.unit : "";
+    if (n != null && unit && /kg\s*\/\s*m/i.test(unit)) {
+      n = n / 1000;
+      unit = "g/cm³";
+      return { n: n, label: n.toFixed(3), unit: prettyUnit(unit) || "g/cm³" };
+    }
+    if (n != null && n > 5) {
+      n = n / 1000;
+      unit = "g/cm³";
+      return { n: n, label: n.toFixed(3), unit: prettyUnit(unit) || "g/cm³" };
+    }
+    return { n: n, label: (n != null ? n.toFixed(3) : d.text), unit: prettyUnit(unit) || "g/cm³" };
+  }
+
+  function formatHeadline(obj, key) {
+    const p = propOf(obj, key);
+    if (key === "density") {
+      const d = densityNorm(p);
+      if (d.n == null && !isPresent(p)) return { label: PROP_LABEL[key] || key, text: "—", unit: "" };
+      return { label: "密度", text: d.label || "—", unit: d.unit || "" };
+    }
+    const d = displayValue(p);
+    return { label: PROP_LABEL[key] || key, text: d.text, unit: d.unit };
+  }
+
+  function sourceName(s) {
+    if (!s) return "";
+    if (s.path) {
+      const parts = String(s.path).split(/[/\\]/);
+      return parts[parts.length - 1];
+    }
+    return s.title || s.url || "";
+  }
+
+  function primarySource(g) {
+    const sources = g.sources || [];
+    if (!sources.length) return "公开技术资料";
+    const first = sources[0];
+    const file = sourceName(first);
+    return first.title + (file && first.path ? "（" + file + "）" : "");
+  }
+
+  function propKeysFor(g) {
+    const keys = Object.keys(g.properties || {});
+    const skip = { film_note: 1, notes: 1, comment: 1, source: 1 };
+    return keys.filter(function (k) {
+      if (skip[k]) return false;
+      return isPresent(g.properties[k]);
+    });
+  }
+
+  function unionPropKeys(g) {
+    const seen = [];
+    function add(k) {
+      if (seen.indexOf(k) === -1) seen.push(k);
+    }
+    propKeysFor(g).forEach(add);
+    (g.competitors || []).forEach(function (c) {
+      Object.keys(c.properties || {}).forEach(function (k) {
+        if (k === "film_note" || k === "notes" || k === "comment") return;
+        if (isPresent(c.properties[k])) add(k);
+      });
+    });
+    const preferred = [
+      "mfr", "mfr_himilan", "mfr_surlyn", "density", "density_himilan", "density_surlyn",
+      "gma_content", "ma_content", "maa_content", "acrylate_content", "ba_content", "va_content",
+      "vicat", "vicat_himilan", "melting_point", "melting_point_surlyn", "hdt", "tg", "brittleness_temperature",
+      "tensile_strength", "tensile_strength_yield", "tensile_strength_break", "tensile_elongation_break",
+      "tensile_strength_yield_film_md_td", "tensile_strength_break_film_md_td", "tensile_elongation_break_film_md_td",
+      "flexural_modulus", "flexural_rigidity", "secant_modulus_1pct_md_td", "shore_d", "shore_d_himilan",
+      "izod_impact", "charpy_impact", "dart_drop", "elmendorf_tear_md_td",
+      "escr", "haze", "gloss_45", "heat_seal_initiation", "melt_tension", "water_absorption"
+    ];
+    seen.sort(function (a, b) {
+      const ia = preferred.indexOf(a);
+      const ib = preferred.indexOf(b);
+      if (ia === -1 && ib === -1) return a.localeCompare(b);
+      if (ia === -1) return 1;
+      if (ib === -1) return -1;
+      return ia - ib;
+    });
+    return seen;
+  }
+
+  function loadQuotes() {
+    try {
+      return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveQuotes(q) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(q)); } catch (e) {}
+  }
+  function emptyQuote() {
+    return {
+      customer: "", price: "", qty: "", delivery: "", validity: "", remarks: "",
+      includeInfo: true, includeCmp: true, includeQuote: true, comps: null
+    };
+  }
+  function formatMoney(n) {
+    if (n == null || !isFinite(n)) return "—";
+    return n.toLocaleString("zh-CN", { maximumFractionDigits: 2, minimumFractionDigits: 0 }) + " 元";
+  }
+  function formatYuan(n) {
+    if (n == null || !isFinite(n)) return "—";
+    return n.toLocaleString("zh-CN", { maximumFractionDigits: 2, minimumFractionDigits: 0 });
+  }
+  function formatDateCN(isoOrDate) {
+    if (!isoOrDate) return "—";
+    var d;
+    if (isoOrDate instanceof Date) d = isoOrDate;
+    else {
+      const s = String(isoOrDate);
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (m) return m[1] + "年" + Number(m[2]) + "月" + Number(m[3]) + "日";
+      d = new Date(s);
+    }
+    if (isNaN(d.getTime())) return "—";
+    return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + "日";
+  }
+
+  function filenameSafe(s) {
+    return String(s || "")
+      .replace(/（[^）]*）/g, "")
+      .replace(/\([^)]*\)/g, "")
+      .replace(/[\\/:*?"<>|]+/g, "")
+      .replace(/\s+/g, "")
+      .replace(/_+/g, "_")
+      .replace(/^_|_$/g, "")
+      .slice(0, 24);
+  }
+  function suggestPdfTitle(g, q) {
+    const parts = [];
+    if (q.includeInfo) parts.push("资料");
+    if (q.includeCmp) parts.push("对比");
+    if (q.includeQuote) parts.push("报价");
+    const mid = parts.join("与") || "资料";
+    const customer = filenameSafe(q.customer || "");
+    const d = new Date();
+    const date = String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0");
+    const segs = [g.grade, mid];
+    if (customer) segs.push(customer);
+    segs.push(date);
+    return segs.join("_");
+  }
+  function customerText(s) {
+    var text = String(s || "");
+    text = text.replace(/（[^）]*(系列总表|用户原件|主数据源|物性汇总|单页\s*TDS|官方总表|本批|本轮|原件)[^）]*）/g, "");
+    text = text.replace(/是本批里/g, "是");
+    text = text.replace(/\s{2,}/g, " ").replace(/[，、；]\s*$/g, "").trim();
+    return text;
+  }
+
+  function parseRoute() {
+    const raw = (location.hash || "#/").replace(/^#/, "");
+    const [path, query] = raw.split("?");
+    const parts = path.split("/").filter(Boolean);
+    const params = {};
+    if (query) {
+      query.split("&").forEach(function (kv) {
+        const i = kv.indexOf("=");
+        if (i === -1) params[decodeURIComponent(kv)] = "";
+        else params[decodeURIComponent(kv.slice(0, i))] = decodeURIComponent(kv.slice(i + 1));
+      });
+    }
+    if (parts[0] === "grade" && parts[1]) {
+      return { view: "grade", id: parts[1], vs: params.vs || "", from: params.from || "" };
+    }
+    return { view: "home", id: null, vs: "", from: "" };
+  }
+
+  function goHome() {
+    location.hash = "#/";
+  }
+  function goGrade(id, extra) {
+    let h = "#/grade/" + encodeURIComponent(id);
+    const q = [];
+    if (extra && extra.vs) q.push("vs=" + encodeURIComponent(extra.vs));
+    if (extra && extra.from) q.push("from=" + encodeURIComponent(extra.from));
+    if (q.length) h += "?" + q.join("&");
+    location.hash = h;
+  }
+
+  function norm(s) {
+    return String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
+  }
+
+  function searchIndex() {
+    const items = [];
+    GRADES.forEach(function (g) {
+      const m = metaOf(g.grade);
+      const hay = [
+        g.grade, g.brand, g.manufacturer, g.polymer_type,
+        m.line, m.makerShort, (m.tags || []).join(" "), (m.aliases || []).join(" "),
+        (g.typical_applications || []).join(" "), (g.features || []).join(" ")
+      ].join(" ");
+      items.push({
+        type: "ours",
+        gradeId: g.grade,
+        title: g.grade,
+        sub: (m.makerShort || g.manufacturer) + " · " + (catOf(g.grade).label),
+        tag: "我方牌号",
+        hay: hay
+      });
+      (g.competitors || []).forEach(function (c) {
+        const chay = [c.grade, c.brand, c.manufacturer, c.match_note, c.note, JSON.stringify(c.aliases || [])].join(" ");
+        items.push({
+          type: "comp",
+          gradeId: g.grade,
+          compName: c.grade,
+          title: shortName(c.grade),
+          sub: (c.manufacturer || c.brand || "") + " → " + g.grade,
+          tag: matchOf(g.grade, c.grade) || "竞品",
+          hay: chay + " " + hay
+        });
+      });
+    });
+    return items;
+  }
+
+  const INDEX = searchIndex();
+
+  function shortName(name) {
+    if (!name) return "";
+    const cut = name.split("（")[0].split("(")[0].trim();
+    return cut.length > 36 ? cut.slice(0, 34) + "…" : cut;
+  }
+  function shortMaker(s) {
+    if (!s) return "";
+    const m = String(s).match(/（([^）]+)）/);
+    let label = m ? m[1] : String(s);
+    if (label.length > 10 && label.indexOf("/") !== -1) {
+      label = label.split("/").pop().trim();
+    }
+    if (label.length > 14) label = label.slice(0, 13) + "…";
+    return label;
+  }
+
+  function runSearch(q) {
+    const nq = norm(q);
+    if (!nq) return [];
+    const hits = [];
+    INDEX.forEach(function (it) {
+      const hay = norm(it.hay + " " + it.title);
+      const score =
+        norm(it.title) === nq ? 100 :
+        norm(it.title).indexOf(nq) === 0 ? 80 :
+        norm(it.title).indexOf(nq) !== -1 ? 60 :
+        hay.indexOf(nq) !== -1 ? 40 : 0;
+      if (score) hits.push({ item: it, score: score });
+    });
+    hits.sort(function (a, b) {
+      if (b.score !== a.score) return b.score - a.score;
+      if (a.item.type !== b.item.type) return a.item.type === "ours" ? -1 : 1;
+      return a.item.title.localeCompare(b.item.title);
+    });
+    const seen = {};
+    const out = [];
+    hits.forEach(function (h) {
+      const k = h.item.type + "|" + h.item.gradeId + "|" + (h.item.compName || "");
+      if (seen[k]) return;
+      seen[k] = 1;
+      out.push(h.item);
+    });
+    return out.slice(0, 8);
+  }
+
+  function renderSearchPop() {
+    const q = $navSearch.value.trim();
+    if (!state.searchOpen) {
+      $searchPop.hidden = true;
+      $searchPop.innerHTML = "";
+      return;
+    }
+    const hits = q ? runSearch(q) : [];
+    state.searchHits = hits;
+    if (!q) {
+      $searchPop.hidden = false;
+      $searchPop.innerHTML = '<div class="search-hint">可搜索我方牌号或竞品，如 SP2320、ELITE 5811、AX8840</div>';
+      return;
+    }
+    if (!hits.length) {
+      $searchPop.hidden = false;
+      $searchPop.innerHTML = '<div class="search-empty">没有找到匹配的牌号</div>';
+      return;
+    }
+    if (state.activeHit >= hits.length) state.activeHit = 0;
+    $searchPop.hidden = false;
+    $searchPop.innerHTML = hits.map(function (it, i) {
+      return '<button type="button" class="search-item' + (i === state.activeHit ? " active" : "") + '" data-i="' + i + '">' +
+        '<span><span class="si-name">' + esc(it.title) + '</span><span class="si-sub">' + esc(it.sub) + '</span></span>' +
+        '<span class="si-tag">' + esc(it.tag) + '</span></button>';
+    }).join("");
+  }
+
+  function pickHit(it) {
+    state.searchOpen = false;
+    $searchPop.hidden = true;
+    $navSearch.blur();
+    if (it.type === "comp") {
+      goGrade(it.gradeId, { vs: it.compName, from: it.compName });
+    } else {
+      goGrade(it.gradeId);
+    }
+  }
+
+  function toast(msg) {
+    $toast.textContent = msg;
+    $toast.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { $toast.classList.remove("show"); }, 2200);
+  }
+
+  function renderFilters() {
+    const route = parseRoute();
+    const sub = document.getElementById("subbar");
+    if (sub) sub.hidden = route.view !== "home";
+    $filters.hidden = route.view !== "home";
+    if (route.view !== "home") return;
+    const items = [
+      { id: "all", label: "全部" },
+      { id: "mpe", label: "茂金属 PE" },
+      { id: "ionomer", label: "离子聚合物" },
+      { id: "compat", label: "相容剂增韧剂" }
+    ];
+    $filters.innerHTML = items.map(function (it) {
+      return '<button type="button" class="chip' + (state.category === it.id ? " active" : "") + '" data-cat="' + it.id + '">' + esc(it.label) + "</button>";
+    }).join("");
+  }
+
+  function renderHome() {
+    const list = GRADES.filter(function (g) {
+      if (state.category !== "all" && metaOf(g.grade).category !== state.category) return false;
+      return true;
+    });
+    const cards = list.map(function (g) {
+      const m = metaOf(g.grade);
+      const cat = catOf(g.grade);
+      const heads = (m.headlines || ["mfr", "density"]).map(function (k) { return formatHeadline(g, k); });
+      const cols = heads.length === 2 ? " cols-2" : "";
+      return (
+        '<button type="button" class="card" data-grade="' + esc(g.grade) + '" style="--cat:' + cat.bar + ';--cat-bg:' + cat.bg + ';--cat-ink:' + cat.ink + '">' +
+          '<div class="card-top"><h2 class="card-id">' + esc(g.grade) + '</h2><span class="cat-pill">' + esc(cat.label) + "</span></div>" +
+          '<p class="card-maker">' + esc(m.makerShort || g.manufacturer) + '</p>' +
+          '<p class="card-line">' + esc(m.line || g.polymer_type) + "</p>" +
+          '<div class="tags">' + (m.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") + "</div>" +
+          '<div class="specs' + cols + '">' + heads.map(function (h) {
+            return '<div class="spec"><span class="sv">' + esc(h.text) + (h.unit ? '<span class="su">' + esc(h.unit) + "</span>" : "") + '</span><span class="sl">' + esc(h.label) + "</span></div>";
+          }).join("") + "</div>" +
+        "</button>"
+      );
+    }).join("");
+    $main.innerHTML =
+      '<div class="view">' +
+        '<section class="home-hero">' +
+          '<p class="eyebrow">在售牌号 · ' + GRADES.length + " 个</p>" +
+          "<h1>客户问起，立刻出资料</h1>" +
+          "<p>点选或搜索牌号，即可查看物性、用途、卖点与对标竞品。价格由你来定，数值仅供参考。</p>" +
+        "</section>" +
+        '<div class="grid">' + (cards || '<p class="muted">该分类下暂无牌号。</p>') + "</div>" +
+      "</div>";
+  }
+
+  function cellHtml(p, key) {
+    if (key === "density") {
+      const d = densityNorm(p);
+      if (d.n == null && !isPresent(p)) return '<span class="cell-miss">—</span>';
+      return '<span class="cell-wrap"><span class="cell-val">' + esc(d.label) + '</span> <span class="cell-unit">' + esc(d.unit) + "</span></span>";
+    }
+    const d = displayValue(p);
+    if (d.missing) return '<span class="cell-miss">—</span>';
+    return '<span class="cell-wrap"><span class="cell-val">' + esc(d.text) + "</span>" + (d.unit ? ' <span class="cell-unit">' + esc(d.unit) + "</span>" : "") + "</span>";
+  }
+
+  function renderDetail(g) {
+    const m = metaOf(g.grade);
+    const cat = catOf(g.grade);
+    const keys = propKeysFor(g);
+    const cmpKeys = unionPropKeys(g);
+    const comps = g.competitors || [];
+    const vs = state.vs && comps.some(function (c) { return c.grade === state.vs; }) ? state.vs : "";
+    const chartKeys = (m.chartKeys || ["mfr", "density"]).filter(function (k) {
+      return numericForChart(g, k) != null || comps.some(function (c) { return numericForChart(c, k) != null; });
+    });
+    if (!state.chartKey || chartKeys.indexOf(state.chartKey) === -1) {
+      state.chartKey = chartKeys[0] || "mfr";
+    }
+
+    const props = keys.map(function (k) {
+      const p = propOf(g, k);
+      const d = k === "density" ? (function () {
+        const x = densityNorm(p);
+        const raw = displayValue(p);
+        return { text: x.label || "—", unit: x.unit, method: raw.method, missing: x.n == null && !isPresent(p) };
+      })() : displayValue(p);
+      return (
+        '<div class="prop-card"><div class="pl">' + esc(PROP_LABEL[k] || k) + "</div>" +
+        '<div class="pv">' + esc(d.text) + (d.unit ? '<span class="u">' + esc(d.unit) + "</span>" : "") + "</div>" +
+        '<div class="pm">' + esc(d.method || "典型值") + "</div></div>"
+      );
+    }).join("");
+
+    const apps = (g.typical_applications || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+    const feats = (g.features || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+
+    const srcItems = (g.sources || []).map(function (s) {
+      const file = s.path ? sourceName(s) : "";
+      const title = s.title || "";
+      const label = title + (file && title.indexOf(file) === -1 ? " · " + file : "");
+      return "<li>" + esc(label) + "</li>";
+    }).join("");
+
+    const jump = state.jumpedFrom
+      ? '<div class="jump-note">已根据竞品 <strong>' + esc(shortName(state.jumpedFrom)) + "</strong> 定位到我方牌号 " + esc(g.grade) + "，可在下方表格中对照，导出 PDF 时也可勾选该竞品。</div>"
+      : "";
+
+    const family = m.familyNote ? '<div class="warn">' + esc(m.familyNote) + "</div>" : "";
+
+    const headCells = ['<th class="sticky">物性</th>', '<th class="ours">我方 · ' + esc(g.grade) + "</th>"]
+      .concat(comps.map(function (c) {
+        const tag = matchOf(g.grade, c.grade);
+        const bc = BADGE_CLASS[tag] || "badge-ref";
+        return '<th><span class="th-grade">' + esc(shortName(c.grade)) + '</span><span class="th-maker">' +
+          esc(c.manufacturer || c.brand || "") + "</span>" +
+          (tag ? '<span class="badge ' + bc + '">' + esc(tag) + "</span>" : "") + "</th>";
+      })).join("");
+
+    const bodyRows = cmpKeys.map(function (k) {
+      return "<tr><td class=\"sticky\">" + esc(PROP_LABEL[k] || k) + "</td><td class=\"ours num\">" +
+        cellHtml(propOf(g, k), k) + "</td>" +
+        comps.map(function (c) { return '<td class="num">' + cellHtml(propOf(c, k), k) + "</td>"; }).join("") +
+        "</tr>";
+    }).join("");
+
+    const noteRow = comps.length
+      ? '<tr class="note-row"><td class="sticky">对标说明</td><td class="ours muted">—</td>' +
+        comps.map(function (c) {
+          const note = c.match_note || c.note || c.comparison_note || "";
+          return "<td>" + esc(note || "—") + "</td>";
+        }).join("") + "</tr>"
+      : "";
+
+    const seg = chartKeys.map(function (k) {
+      return '<button type="button" data-chart="' + esc(k) + '" class="' + (state.chartKey === k ? "active" : "") + '">' +
+        esc(CHART_LABEL[k] || PROP_LABEL[k] || k) + "</button>";
+    }).join("");
+
+    const footnotes = keys.map(function (k) {
+      const p = propOf(g, k);
+      if (!p || typeof p !== "object" || !p.note) return "";
+      const note = String(p.note).trim();
+      if (!note) return "";
+      if (/^合\s*0\.\d+\s*g/.test(note)) return "";
+      const shown = (k === "density" ? (densityNorm(p).label || "") : displayValue(p).text);
+      if (shown && note.indexOf(shown) !== -1 && note.length < 24) return "";
+      return "<li>" + esc(PROP_LABEL[k] || k) + "：" + esc(note) + "</li>";
+    }).filter(Boolean);
+    const footnoteBox = footnotes.length
+      ? '<ul class="footnotes">' + footnotes.join("") + "</ul>"
+      : "";
+    const matchCards = comps.map(function (c) {
+      const tag = matchOf(g.grade, c.grade);
+      const bc = BADGE_CLASS[tag] || "badge-ref";
+      const note = c.match_note || c.note || c.comparison_note || "";
+      if (!note && !tag) return "";
+      return '<div class="match-note"><div class="mh"><strong>' + esc(shortName(c.grade)) + "</strong>" +
+        (tag ? '<span class="badge ' + bc + '">' + esc(tag) + "</span>" : "") + "</div><p>" +
+        esc(note || "—") + "</p></div>";
+    }).join("");
+
+    const q = Object.assign(emptyQuote(), loadQuotes()[g.grade] || {});
+    const total = (parseFloat(q.price) || 0) * (parseFloat(q.qty) || 0);
+    const includeInfo = q.includeInfo !== false;
+    const includeCmp = q.includeCmp !== false;
+    const includeQuote = q.includeQuote !== false;
+    const chosen = Array.isArray(q.comps) ? q.comps : comps.map(function (c) { return c.grade; });
+    const compChecks = comps.map(function (c) {
+      const tag = matchOf(g.grade, c.grade);
+      const bc = BADGE_CLASS[tag] || "badge-ref";
+      const on = chosen.indexOf(c.grade) !== -1;
+      return '<label class="comp-item"><input type="checkbox" data-comp="' + esc(c.grade) + '"' + (on ? " checked" : "") + ">" +
+        '<span class="cn">' + esc(shortName(c.grade)) + "</span>" +
+        (tag ? '<span class="badge ' + bc + '">' + esc(tag) + "</span>" : "") + "</label>";
+    }).join("");
+
+    $main.innerHTML =
+      '<div class="view">' +
+        '<button type="button" class="back" id="btn-back">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>全部牌号</button>' +
+        jump +
+        '<div class="hero">' +
+          '<div class="hero-left">' +
+            "<h1>" + esc(g.grade) + "</h1>" +
+            '<p class="hero-maker">' + esc(m.makerShort || g.manufacturer || "") + "</p>" +
+            '<p class="hero-type">' + esc(g.polymer_type || "") + "</p>" +
+            '<div class="tags">' + (m.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") +
+              '<span class="tag">' + esc(cat.label) + "</span></div>" +
+          "</div>" +
+        "</div>" +
+
+        '<section class="export-dock" id="export-dock">' +
+          '<div class="export-col">' +
+            "<h2>报价</h2>" +
+            '<div class="qf-grid">' +
+              '<div class="field span-2"><label>客户名称</label><input id="q-customer" type="text" value="' + esc(q.customer) + '" placeholder="例如 某某包装有限公司" autocomplete="organization"></div>' +
+              '<div class="field span-2"><label>报价有效期</label><input id="q-validity" type="date" value="' + esc(q.validity) + '"></div>' +
+              '<div class="field"><label>单价（元/吨）</label><input id="q-price" type="number" min="0" step="1" inputmode="decimal" value="' + esc(q.price) + '" placeholder="例如 9800"></div>' +
+              '<div class="field"><label>数量（吨）</label><input id="q-qty" type="number" min="0" step="0.01" inputmode="decimal" value="' + esc(q.qty) + '" placeholder="例如 10"></div>' +
+              '<div class="field span-2"><label>合计</label><div class="total-box" id="q-total">' + esc(total ? formatMoney(total) : "—") + "</div></div>" +
+              '<div class="field span-4"><label>交货条款</label><input id="q-delivery" type="text" value="' + esc(q.delivery) + '" placeholder="例如 自提，或送到指定仓库"></div>' +
+              '<div class="field span-4"><label>备注</label><textarea id="q-remarks" placeholder="可选，将写入报价单">' + esc(q.remarks) + "</textarea></div>" +
+            "</div>" +
+            '<p class="export-hint" style="margin-top:10px">报价保存在本机浏览器，仅用于导出，换设备不会同步。</p>' +
+          "</div>" +
+          '<div class="export-col">' +
+            "<h2>导出 PDF</h2>" +
+            '<div class="sec-toggles">' +
+              '<label><input type="checkbox" id="ex-info"' + (includeInfo ? " checked" : "") + "> 资料</label>" +
+              '<label><input type="checkbox" id="ex-cmp"' + (includeCmp ? " checked" : "") + "> 对比</label>" +
+              '<label><input type="checkbox" id="ex-quote"' + (includeQuote ? " checked" : "") + "> 报价</label>" +
+            "</div>" +
+            '<div class="comp-picks' + (includeCmp ? "" : " is-off") + '" id="comp-picks">' +
+              '<div class="comp-picks-head"><span>纳入对比的竞品</span><button type="button" id="ex-comps-all">全选</button></div>' +
+              '<div class="comp-list">' + (compChecks || '<span class="muted">暂无竞品</span>') + "</div>" +
+            "</div>" +
+            '<div class="export-actions">' +
+              '<button type="button" class="btn btn-primary" id="btn-export">导出 PDF</button>' +
+              '<p class="export-hint">在打印窗口选择「另存为 PDF」。建议关闭页眉页脚，避免打出本机路径。</p>' +
+            "</div>" +
+          "</div>" +
+        "</section>" +
+
+        '<section class="section"><h2>关键物性</h2><div class="prop-grid">' + props + "</div>" + footnoteBox + "</section>" +
+
+        '<section class="section"><div class="split">' +
+          '<div class="panel"><h2>典型用途</h2><ul class="list">' + (apps || "<li class=\"muted\">—</li>") + "</ul></div>" +
+          '<div class="panel"><h2>卖点</h2><ul class="list">' + (feats || "<li class=\"muted\">—</li>") + "</ul></div>" +
+        "</div></section>" +
+
+        '<section class="section"><div class="source-box"><strong>资料来源</strong>（主数据源见首条）<ul>' + srcItems + "</ul></div></section>" +
+
+        '<section class="section"><h2>竞品对比</h2>' + family +
+          '<p class="swipe-hint">表格可左右滑动，查看全部竞品</p>' +
+          '<div class="table-wrap"><table class="cmp"><thead><tr>' + headCells + "</tr></thead><tbody>" + bodyRows + "</tbody></table></div>" +
+          (matchCards ? '<div class="match-notes">' + matchCards + "</div>" : "") +
+        "</section>" +
+
+        '<section class="section"><div class="panel">' +
+          '<div class="chart-head"><h2 style="margin:0">物性对照图</h2>' +
+          (seg ? '<div class="seg" id="chart-seg">' + seg + "</div>" : "") + "</div>" +
+          '<div id="chart-body">' + renderBars(g, state.chartKey) + "</div>" +
+          '<p class="quote-hint">仅展示公开资料中可解析的数值；密度已统一到 g/cm³。测试方法不同，不能直接当作规格对比。</p>' +
+        "</div></section>" +
+
+      "</div>";
+  }
+
+  function readQuoteForm(g) {
+    const get = function (id) {
+      const el = document.getElementById(id);
+      return el ? el.value : "";
+    };
+    const checked = function (id, fallback) {
+      const el = document.getElementById(id);
+      return el ? !!el.checked : fallback;
+    };
+    const comps = Array.prototype.map.call(
+      document.querySelectorAll("#comp-picks input[data-comp]:checked"),
+      function (el) { return el.getAttribute("data-comp"); }
+    );
+    const q = {
+      customer: get("q-customer"),
+      price: get("q-price"),
+      qty: get("q-qty"),
+      delivery: get("q-delivery"),
+      validity: get("q-validity"),
+      remarks: get("q-remarks"),
+      includeInfo: checked("ex-info", true),
+      includeCmp: checked("ex-cmp", true),
+      includeQuote: checked("ex-quote", true),
+      comps: comps
+    };
+    if (g) {
+      const all = loadQuotes();
+      all[g.grade] = q;
+      saveQuotes(all);
+    }
+    return q;
+  }
+
+  function badgeClassPrint(tag) {
+    if (tag === "最接近") return "closest";
+    if (tag === "可替代") return "alt";
+    if (tag === "仅参照") return "ref";
+    if (tag === "不能直接替换") return "no";
+    return "ref";
+  }
+
+  function printPropCells(obj, key) {
+    if (key === "density") {
+      const d = densityNorm(propOf(obj, key));
+      const raw = displayValue(propOf(obj, key));
+      if (d.n == null && raw.missing) return { val: "—", unit: "", method: "" };
+      return { val: d.label || "—", unit: d.unit || "", method: raw.method || "" };
+    }
+    const d = displayValue(propOf(obj, key));
+    if (d.missing) return { val: "—", unit: "", method: "" };
+    return { val: d.text, unit: d.unit || "", method: d.method || "" };
+  }
+
+  function preparePrint(g, q) {
+    const m = metaOf(g.grade);
+    const cat = catOf(g.grade);
+    const sheet = document.getElementById("print-sheet");
+    if (!sheet) return;
+    q = q || readQuoteForm(g);
+    const today = formatDateCN(new Date());
+    const docParts = [];
+    if (q.includeInfo) docParts.push("牌号资料");
+    if (q.includeCmp) docParts.push("竞品对比");
+    if (q.includeQuote) docParts.push("报价单");
+    const docName = docParts.join(" · ") || "牌号资料";
+
+    let html = "";
+    html += '<header class="ps-head">';
+    html += '<div class="ps-brand"><span class="ps-mark">文</span>文博塑料</div>';
+    html += '<div class="ps-head-meta"><div class="ps-doc">' + esc(docName) + "</div>";
+    html += "<div>日期：" + esc(today) + "</div></div></header>";
+    html += '<p class="ps-disc-top">以下物性均为公开资料典型值，仅供参考，不构成规格保证。</p>';
+
+    html += '<div class="ps-grade">';
+    html += "<h1>" + esc(g.grade) + "</h1>";
+    html += '<p class="ps-maker">' + esc(m.makerShort || g.manufacturer || "") + "</p>";
+    if (g.manufacturer && m.makerShort && g.manufacturer !== m.makerShort) {
+      html += '<p class="ps-legal">' + esc(g.manufacturer) + "</p>";
+    }
+    html += '<p class="ps-type">' + esc([g.brand, g.polymer_type, cat.label].filter(Boolean).join(" · ")) + "</p>";
+    if (m.line) html += '<p class="ps-line">定位：' + esc(m.line) + "</p>";
+    if (m.tags && m.tags.length) html += '<p class="ps-tags">' + esc(m.tags.join(" · ")) + "</p>";
+    html += "</div>";
+
+    if (q.includeInfo) {
+      html += '<section class="ps-sec"><div class="ps-split">';
+      html += "<div><h3>典型用途</h3><ul class=\"ps-ul\">";
+      (g.typical_applications || []).forEach(function (item) {
+        const line = customerText(item);
+        if (line) html += "<li>" + esc(line) + "</li>";
+      });
+      if (!(g.typical_applications || []).some(function (item) { return customerText(item); })) html += "<li>—</li>";
+      html += "</ul></div><div><h3>卖点</h3><ul class=\"ps-ul\">";
+      (g.features || []).forEach(function (item) {
+        const line = customerText(item);
+        if (line) html += "<li>" + esc(line) + "</li>";
+      });
+      if (!(g.features || []).some(function (item) { return customerText(item); })) html += "<li>—</li>";
+      html += "</ul></div></div></section>";
+
+      html += '<section class="ps-sec"><h2>关键物性</h2>';
+      html += '<table class="ps-table"><thead><tr><th>项目</th><th>典型值</th><th>单位</th><th>测试条件 / 标准</th></tr></thead><tbody>';
+      propKeysFor(g).forEach(function (k) {
+        const c = printPropCells(g, k);
+        html += "<tr><td>" + esc(PROP_LABEL[k] || k) + '</td><td class="num">' + esc(c.val) + '</td><td class="num">' + esc(c.unit || "—") + "</td><td>" + esc(c.method || "—") + "</td></tr>";
+      });
+      html += "</tbody></table>";
+      html += "</section>";
+    }
+
+    if (q.includeCmp) {
+      const selectedNames = Array.isArray(q.comps) ? q.comps : (g.competitors || []).map(function (c) { return c.grade; });
+      const selected = (g.competitors || []).filter(function (c) { return selectedNames.indexOf(c.grade) !== -1; });
+      html += '<section class="ps-sec"><h2>竞品对比</h2>';
+      if (m.familyNote) html += '<div class="ps-warn">' + esc(customerText(m.familyNote)) + "</div>";
+      if (!selected.length) {
+        html += '<p class="ps-notes">未选择需要对比的竞品。</p>';
+      } else {
+        const keys = (function () {
+          const fake = { properties: g.properties, competitors: selected };
+          return unionPropKeys(fake);
+        })();
+        html += '<table class="ps-table"><thead><tr><th>物性</th><th>我方 · ' + esc(g.grade) + "</th>";
+        selected.forEach(function (c) {
+          const tag = matchOf(g.grade, c.grade);
+          html += "<th>" + esc(shortName(c.grade));
+          if (c.manufacturer) html += '<div class="ps-maker-line">' + esc(shortMaker(c.manufacturer)) + "</div>";
+          if (tag) html += '<span class="ps-badge ' + badgeClassPrint(tag) + '">' + esc(tag) + "</span>";
+          html += "</th>";
+        });
+        html += "</tr></thead><tbody>";
+        keys.forEach(function (k) {
+          html += "<tr><td>" + esc(PROP_LABEL[k] || k) + '</td><td class="num ps-ours">';
+          const ours = printPropCells(g, k);
+          html += esc(ours.val) + (ours.unit ? " " + esc(ours.unit) : "") + "</td>";
+          selected.forEach(function (c) {
+            const d = printPropCells(c, k);
+            html += '<td class="num">' + esc(d.val) + (d.unit ? " " + esc(d.unit) : "") + "</td>";
+          });
+          html += "</tr>";
+        });
+        html += "</tbody></table>";
+        html += '<div class="ps-notes">';
+        selected.forEach(function (c) {
+          const tag = matchOf(g.grade, c.grade);
+          const note = customerText(c.match_note || c.note || "");
+          html += "<p><strong>" + esc(shortName(c.grade)) + "</strong>";
+          if (tag) html += ' <span class="ps-badge ' + badgeClassPrint(tag) + '">' + esc(tag) + "</span>";
+          html += "　" + esc(note || "—") + "</p>";
+        });
+        html += "</div>";
+      }
+      html += "</section>";
+    }
+
+    if (q.includeQuote) {
+      const priceN = parseFloat(q.price);
+      const qtyN = parseFloat(q.qty);
+      const hasTotal = isFinite(priceN) && isFinite(qtyN) && (priceN || qtyN);
+      const total = hasTotal ? priceN * qtyN : null;
+      html += '<section class="ps-sec ps-quote"><h2>报价</h2>';
+      html += '<table class="ps-kv">';
+      html += "<tr><th>客户名称</th><td>" + esc(q.customer || "—") + "</td></tr>";
+      html += "<tr><th>牌号</th><td>" + esc(g.grade) + (m.makerShort ? " · " + esc(m.makerShort) : "") + "</td></tr>";
+      html += "<tr><th>单价</th><td>" + (isFinite(priceN) && q.price !== "" ? esc(formatYuan(priceN) + " 元/吨") : "—") + "</td></tr>";
+      html += "<tr><th>数量</th><td>" + (isFinite(qtyN) && q.qty !== "" ? esc(String(q.qty) + " 吨") : "—") + "</td></tr>";
+      html += '<tr><th>合计</th><td class="total">' + esc(total != null ? formatMoney(total) : "—") + "</td></tr>";
+      html += "<tr><th>交货条款</th><td>" + esc(q.delivery || "—") + "</td></tr>";
+      html += "<tr><th>报价有效期</th><td>" + esc(q.validity ? formatDateCN(q.validity) : "—") + "</td></tr>";
+      html += "<tr><th>备注</th><td>" + esc(q.remarks || "—") + "</td></tr>";
+      html += "</table></section>";
+    }
+
+    html += '<footer class="ps-foot">';
+    html += "物性数值来自公开技术资料与厂家物性表，均为典型值或参考值，仅供对照，不构成规格保证。未列出的项目以 — 表示。具体以厂家正式物性表和合同约定为准。测试方法与样条条件不同时，牌号之间不可直接当作规格对比。";
+    html += '<div class="ps-sign">文博塑料 · ' + esc(today) + "</div>";
+    html += "</footer>";
+
+    sheet.innerHTML = html;
+    document.title = suggestPdfTitle(g, q);
+  }
+
+  function exportPdf(g) {
+    const q = readQuoteForm(g);
+    if (!q.includeInfo && !q.includeCmp && !q.includeQuote) {
+      toast("请至少勾选一项：资料、对比或报价");
+      return;
+    }
+    if (q.includeCmp && (g.competitors || []).length && !(q.comps && q.comps.length)) {
+      toast("已勾选对比，请至少选择一个竞品");
+      return;
+    }
+    const prevTitle = document.title;
+    document.title = suggestPdfTitle(g, q);
+    preparePrint(g, q);
+    const cleanup = function () {
+      document.title = prevTitle;
+      window.removeEventListener("afterprint", cleanup);
+    };
+    window.addEventListener("afterprint", cleanup);
+    window.print();
+  }
+  window.__wbPreparePrint = function () {
+    const route = parseRoute();
+    const g = byId[route.id];
+    if (!g) return false;
+    preparePrint(g, readQuoteForm(g));
+    return true;
+  };
+
+  function numericForChart(obj, key) {
+    const p = propOf(obj, key);
+    if (key === "density") return densityNorm(p).n;
+    return numericOf(p);
+  }
+
+  function unitForChart(obj, key) {
+    if (key === "density") return "g/cm³";
+    const p = propOf(obj, key);
+    if (p && typeof p === "object") return prettyUnit(p.unit || "");
+    return "";
+  }
+
+  function renderBars(g, key) {
+    const rows = [{ name: g.grade, ours: true, n: numericForChart(g, key), unit: unitForChart(g, key) }];
+    (g.competitors || []).forEach(function (c) {
+      const n = numericForChart(c, key);
+      if (n == null) return;
+      rows.push({ name: shortName(c.grade), ours: false, n: n, unit: unitForChart(c, key) });
+    });
+    const usable = rows.filter(function (r) { return r.n != null; });
+    if (!usable.length) return '<p class="bar-empty">该项暂无可比数值。</p>';
+    const nums = usable.map(function (r) { return r.n; });
+    let min = Math.min.apply(null, nums);
+    let max = Math.max.apply(null, nums);
+    let lo, hi;
+    if (key === "density") {
+      const pad = Math.max(0.008, (max - min) * 0.4);
+      lo = min - pad;
+      hi = max + pad;
+    } else {
+      lo = 0;
+      hi = max * 1.15 || 1;
+    }
+    const unit = usable[0].unit || "";
+    return usable.map(function (r) {
+      const pct = Math.max(4, Math.min(100, ((r.n - lo) / (hi - lo)) * 100));
+      const val = (key === "density" ? r.n.toFixed(3) : String(r.n)) + (unit ? " " + unit : "");
+      return '<div class="bar-row">' +
+        '<div class="bar-name' + (r.ours ? " ours" : "") + '">' + esc(r.name) + "</div>" +
+        '<div class="bar-track"><div class="bar-fill' + (r.ours ? " ours" : "") + '" style="width:' + pct.toFixed(1) + '%"></div></div>' +
+        '<div class="bar-val">' + esc(val) + "</div></div>";
+    }).join("");
+  }
+
+  function lineProp(label, obj, key) {
+    const p = propOf(obj, key);
+    if (key === "density") {
+      const d = densityNorm(p);
+      if (d.n == null && !isPresent(p)) return "—";
+      const raw = displayValue(p);
+      return d.label + " " + d.unit + (raw.method ? "（" + raw.method + "）" : "");
+    }
+    const d = displayValue(p);
+    if (d.missing) return "—";
+    return d.text + (d.unit ? " " + d.unit : "") + (d.method ? "（" + d.method + "）" : "");
+  }
+
+  function buildCopyText(g, vsName) {
+    const m = metaOf(g.grade);
+    const lines = [];
+    lines.push("【" + g.grade + "】" + (g.manufacturer || "") + (g.brand ? " " + g.brand : "") + (g.polymer_type ? "　" + g.polymer_type : ""));
+    lines.push("");
+    if (m.line) {
+      lines.push("定位：" + m.line + "。");
+      lines.push("");
+    }
+    lines.push("关键物性（典型值，仅供参考）：");
+    propKeysFor(g).forEach(function (k) {
+      lines.push("· " + (PROP_LABEL[k] || k) + "：" + lineProp("", g, k).replace(/^：?/, ""));
+    });
+    // fix: lineProp first arg unused; value already includes method
+    lines[lines.length - propKeysFor(g).length - 0]; // no-op keep lint quiet? we'll rewrite below
+    return finalizeCopy(g, m, vsName);
+  }
+
+  function finalizeCopy(g, m, vsName) {
+    const lines = [];
+    lines.push("【" + g.grade + "】" + [g.manufacturer, g.brand, g.polymer_type].filter(Boolean).join(" · "));
+    lines.push("");
+    if (m.line) lines.push("定位：" + m.line + "。");
+    lines.push("");
+    lines.push("关键物性（典型值，仅供参考）：");
+    propKeysFor(g).forEach(function (k) {
+      lines.push("· " + (PROP_LABEL[k] || k) + "：" + formatLine(g, k));
+    });
+    if (g.typical_applications && g.typical_applications.length) {
+      lines.push("");
+      lines.push("典型用途：");
+      g.typical_applications.forEach(function (t) { lines.push("· " + t); });
+    }
+    if (g.features && g.features.length) {
+      lines.push("");
+      lines.push("卖点：");
+      g.features.forEach(function (t) { lines.push("· " + t); });
+    }
+    lines.push("");
+    lines.push("资料来源：" + primarySource(g));
+    if (vsName) {
+      const c = (g.competitors || []).find(function (x) { return x.grade === vsName; });
+      if (c) {
+        const tag = matchOf(g.grade, c.grade);
+        lines.push("");
+        lines.push("——");
+        lines.push("与 " + shortName(c.grade) + (c.manufacturer ? " · " + c.manufacturer : "") + " 对比（公开资料典型值，仅供参考）：");
+        const keys = unionPropKeys(g).filter(function (k) {
+          return isPresent(propOf(g, k)) || isPresent(propOf(c, k));
+        }).slice(0, 10);
+        keys.forEach(function (k) {
+          lines.push("· " + (PROP_LABEL[k] || k) + "：我方 " + formatLine(g, k, true) + "  vs  对方 " + formatLine(c, k, true));
+        });
+        if (tag) lines.push("对标判断：" + tag + "。");
+        const note = c.match_note || c.note || c.comparison_note;
+        if (note) lines.push("说明：" + note);
+      }
+    }
+    lines.push("");
+    lines.push("以上数值来自公开技术资料，仅供参考，不构成规格保证。具体以厂家正式物性表和合同约定为准。");
+    return lines.join("\n");
+  }
+
+  function formatLine(obj, k, compact) {
+    const p = propOf(obj, k);
+    if (k === "density") {
+      const d = densityNorm(p);
+      if (d.n == null && !isPresent(p)) return "—";
+      const raw = displayValue(p);
+      return d.label + " " + d.unit + (!compact && raw.method ? "（" + raw.method + "）" : "");
+    }
+    const d = displayValue(p);
+    if (d.missing) return "—";
+    return d.text + (d.unit ? " " + d.unit : "") + (!compact && d.method ? "（" + d.method + "）" : "");
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        resolve();
+      } catch (e) {
+        document.body.removeChild(ta);
+        reject(e);
+      }
+    });
+  }
+
+  function render() {
+    const route = parseRoute();
+    renderFilters();
+    if (route.view === "grade") {
+      const g = byId[route.id];
+      if (!g) {
+        $main.innerHTML = '<div class="view"><p>未找到该牌号。</p><button type="button" class="back" id="btn-back">返回全部牌号</button></div>';
+        return;
+      }
+      if (route.vs) state.vs = route.vs;
+      state.jumpedFrom = route.from || "";
+      renderDetail(g);
+    } else {
+      state.jumpedFrom = "";
+      renderHome();
+    }
+  }
+
+  /* events */
+  $navSearch.addEventListener("focus", function () {
+    state.searchOpen = true;
+    renderSearchPop();
+  });
+  $navSearch.addEventListener("input", function () {
+    state.query = $navSearch.value;
+    state.searchOpen = true;
+    state.activeHit = 0;
+    renderSearchPop();
+  });
+  $navSearch.addEventListener("keydown", function (e) {
+    if (!state.searchOpen) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      state.activeHit = Math.min(state.activeHit + 1, Math.max(0, state.searchHits.length - 1));
+      renderSearchPop();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      state.activeHit = Math.max(state.activeHit - 1, 0);
+      renderSearchPop();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const hit = state.searchHits[state.activeHit];
+      if (hit) pickHit(hit);
+    } else if (e.key === "Escape") {
+      state.searchOpen = false;
+      renderSearchPop();
+      $navSearch.blur();
+    }
+  });
+  $searchPop.addEventListener("mousedown", function (e) {
+    const btn = e.target.closest(".search-item");
+    if (!btn) return;
+    e.preventDefault();
+    const it = state.searchHits[Number(btn.getAttribute("data-i"))];
+    if (it) pickHit(it);
+  });
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".search-wrap")) {
+      state.searchOpen = false;
+      renderSearchPop();
+    }
+  });
+
+  $filters.addEventListener("click", function (e) {
+    const btn = e.target.closest("[data-cat]");
+    if (!btn) return;
+    state.category = btn.getAttribute("data-cat");
+    if (parseRoute().view !== "home") {
+      location.hash = "#/";
+      return;
+    }
+    render();
+  });
+
+  $main.addEventListener("click", function (e) {
+    const card = e.target.closest(".card[data-grade]");
+    if (card) {
+      goGrade(card.getAttribute("data-grade"));
+      return;
+    }
+    if (e.target.closest("#btn-back")) {
+      goHome();
+      return;
+    }
+    const seg = e.target.closest("#chart-seg button");
+    if (seg) {
+      state.chartKey = seg.getAttribute("data-chart");
+      const route = parseRoute();
+      const g = byId[route.id];
+      if (!g) return;
+      document.querySelectorAll("#chart-seg button").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-chart") === state.chartKey);
+      });
+      document.getElementById("chart-body").innerHTML = renderBars(g, state.chartKey);
+      return;
+    }
+    if (e.target.closest("#btn-export")) {
+      const route = parseRoute();
+      const g = byId[route.id];
+      if (g) exportPdf(g);
+      return;
+    }
+    if (e.target.closest("#ex-comps-all")) {
+      e.preventDefault();
+      document.querySelectorAll("#comp-picks input[data-comp]").forEach(function (el) { el.checked = true; });
+      const route = parseRoute();
+      const g = byId[route.id];
+      if (g) readQuoteForm(g);
+      return;
+    }
+  });
+
+  $main.addEventListener("change", function (e) {
+    const t = e.target;
+    if (!t) return;
+    if (t.id === "ex-info" || t.id === "ex-cmp" || t.id === "ex-quote" || t.getAttribute("data-comp")) {
+      const route = parseRoute();
+      const g = byId[route.id];
+      if (g) readQuoteForm(g);
+      if (t.id === "ex-cmp") {
+        const box = document.getElementById("comp-picks");
+        if (box) box.classList.toggle("is-off", !t.checked);
+      }
+    }
+    if (t.id === "q-validity") {
+      const route = parseRoute();
+      const g = byId[route.id];
+      if (g) readQuoteForm(g);
+    }
+  });
+
+  $main.addEventListener("input", function (e) {
+    const id = e.target && e.target.id;
+    const fields = { "q-customer": 1, "q-price": 1, "q-qty": 1, "q-delivery": 1, "q-validity": 1, "q-remarks": 1 };
+    if (!fields[id]) return;
+    const route = parseRoute();
+    if (!route.id) return;
+    const g = byId[route.id];
+    if (!g) return;
+    const cur = readQuoteForm(g);
+    const total = (parseFloat(cur.price) || 0) * (parseFloat(cur.qty) || 0);
+    const box = document.getElementById("q-total");
+    if (box) box.textContent = total ? formatMoney(total) : "—";
+  });
+
+  window.addEventListener("hashchange", render);
+
+  const svg = '<svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
+  document.querySelector(".search-wrap").insertAdjacentHTML("afterbegin", svg);
+
+  render();
+})();
+
+  
+  </script>
+</body>
+</html>
